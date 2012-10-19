@@ -1,0 +1,10 @@
+%h1
+  .User_Header
+    ="#{@current_user.username}'s Profile"
+%h2
+  =link_to 'Edit user info', {:controller => 'users', :action => 'edit'}
+
+#photo_button
+  =link_to 'View Photo Page', {:controller => 'photos', :action => 'index', :user_id => @current_user.id}
+  
+

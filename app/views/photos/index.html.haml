@@ -1,0 +1,16 @@
+%script{:src=>"http://maps.googleapis.com/maps/api/js?sensor=false", :type=>"text/javascript"}
+=javascript_include_tag 'map.js'
+-user = User.find(session[:user_id])
+%h1
+  = "PHOTOS PAGE"
+#map{:style => "height:300px;width:500px"} 
+
+#photos
+  = render user.photos
+
+#photo_form  
+= form_for user.photos.new do |f|
+  = f.label :image, "Upload photos:"
+  = f.hidden_field :user_id
+  = f.file_field :image, multiple: true, name: "photo[image]"
+  = f.submit

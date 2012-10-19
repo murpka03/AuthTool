@@ -7,7 +7,11 @@ gem 'rails', '3.2.8'
 
 gem 'sqlite3'
 
+#password encryption
+gem 'bcrypt-ruby', :require => 'bcrypt'
 
+#bootstrap
+gem 'bootstrap-sass', '2.0.4'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -18,18 +22,10 @@ group :assets do
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+  gem 'jquery-fileupload-rails'
 end
 
 gem 'jquery-rails'
-
-group :test, :development do
-  gem 'turn'
-  gem 'rspec-rails'
-  gem 'capybara' #simulates user for testing forms etc.
-  gem 'guard-rspec' #automatically will run rake tests
-  gem 'growl_notify'
-  gem "minitest", ">= 2.10"
-end
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -45,3 +41,7 @@ end
 
 # To use debugger
 # gem 'debugger'
+gem 'rack-raw-upload'
+gem 'carrierwave'
+gem 'rmagick'
+gem 'haml' # YAML-style templates

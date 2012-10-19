@@ -1,0 +1,9 @@
+<% @page_title = "User Auth | Edit" %>
+  <div class="Edit_Form">
+    <H1>Edit Name</H1>
+    <%= form_tag(:action => 'update') do %>
+    <p><center>Username: </br> <%= text_field_tag(:username)%></center></p>
+    <center><%= submit_tag("Update", class:"btn btn-large btn-primary") %></center> 
+    <% end %>
+    
+  </div>
