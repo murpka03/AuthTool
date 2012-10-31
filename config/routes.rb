@@ -12,6 +12,9 @@ Photos::Application.routes.draw do
   match "setting", :to => "sessions#setting"
   match "edit", :to => "users#edit"
   
+  #new
+  match "admin", :to => "users#admin"
+  
 
   match ':controller(/:action(/:id))(.:format)'
 

@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 gem 'rails', '3.2.8'
 
@@ -43,5 +43,5 @@ gem 'jquery-rails'
 # gem 'debugger'
 gem 'rack-raw-upload'
 gem 'carrierwave'
-gem 'rmagick'
+#gem 'rmagick'
 gem 'haml' # YAML-style templates

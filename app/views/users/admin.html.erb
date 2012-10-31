@@ -1,0 +1,8 @@
+<div class="user_list" >
+  <h1> Users </h1>
+  <p>  </p>
+  <% @users.each do |user| %>
+    <p><center><%= user.username %> <%= button_to "Delete User", {:controller => 'users', :action => 'destroy', :id => user.id} %></center></p>
+  <% end %>
+  <center><p></p></center>
+</div>

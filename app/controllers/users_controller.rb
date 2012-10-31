@@ -27,6 +27,11 @@ class UsersController < ApplicationController
   def edit
     @user = User.find session[:user_id]
   end
+  
+  def destroy
+    User.destroy params[:id]
+    redirect_to(:action => 'admin')
+  end
 
   def update
     @user = User.find session[:user_id]
@@ -37,6 +42,10 @@ class UsersController < ApplicationController
     else
       render 'edit'
     end
+  end
+  
+  def admin
+    @users = User.all
   end
   
   
