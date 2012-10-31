@@ -6,7 +6,7 @@
     <p><center>Password: </br> <%=password_field_tag :login_password %></center></p>
     <center><%=submit_tag("login") %></center>
     <% if @attempt == false %>
-      <p><center><k>Username or Password incorrect </k></center></p>
+      <p><center><div id="error">Username or Password incorrect </div></center></p>
     <% end %>
   <% end %>
   

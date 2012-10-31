@@ -50,14 +50,24 @@ p {
 }
 
 /* custom error message format */
-k {
+div#error {
     font-size: 1.1em;
     color: red;
 }
 
 /* My own signin stuff */
-Sign_Form {
+div#Sign_Form {
     
     text-align: center;
+    
+}
+
+/* Custom list of users */
+div#User_Table {
+    text-align: center;
+}
+
+/* Hide the admin check box */
+div#hidden_admin_button {
     
 }

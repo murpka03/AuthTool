@@ -9,10 +9,12 @@ class UsersController < ApplicationController
   
   def new
     @user = User.new
+    
   end
   
   def create
     @user = User.new(params[:user])
+    
         if @user.save
           flash[:notice] = "You Signed up"
           flash[:color]="valid"
@@ -30,7 +32,7 @@ class UsersController < ApplicationController
   
   def destroy
     User.destroy params[:id]
-    redirect_to(:action => 'admin')
+    redirect_to(:controller => 'sessions', :action => 'profile')
   end
 
   def update
@@ -42,10 +44,6 @@ class UsersController < ApplicationController
     else
       render 'edit'
     end
-  end
-  
-  def admin
-    @users = User.all
   end
   
   

@@ -13,7 +13,7 @@ Photos::Application.routes.draw do
   match "edit", :to => "users#edit"
   
   #new
-  match "admin", :to => "users#admin"
+  #match "admin", :to => "users#admin"
   
 
   match ':controller(/:action(/:id))(.:format)'

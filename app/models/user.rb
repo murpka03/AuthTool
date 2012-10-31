@@ -1,13 +1,14 @@
 class User < ActiveRecord::Base
   # attr_accessible :title, :body
   attr_accessor :password
-  attr_accessible :username, :email, :password, :password_confirmation
+  attr_accessible :username, :email, :password, :password_confirmation, :is_admin
   has_many :photos
   attr_accessible :photos
   EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i
   validates :username, :presence => true, :uniqueness => true, :length => { :in => 3..20}
   validates :email, :presence => true, :uniqueness => true, :format => EMAIL_REGEX
   validates :password, :confirmation => true #password confrimation attr
+  validates :is_admin, :inclusion => {:in => [true, false]}
   validates_length_of :password, :in => 6..20, :on => :create
   
   before_save :encrypt_password

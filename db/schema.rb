@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20120919225024) do
     t.string   "salt"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.boolean  "is_admin"
   end
 
   create_table "photos", :force => true do |t|

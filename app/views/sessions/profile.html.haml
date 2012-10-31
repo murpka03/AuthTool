@@ -6,5 +6,9 @@
 
 #photo_button
   =link_to 'View Photo Page', {:controller => 'photos', :action => 'index', :user_id => @current_user.id}
-  
 
+-if @admin
+  %div#User_Table
+    -@users.each do |user|
+      =user.username
+      =button_to "Delete User", {:controller => 'users', :action => 'destroy', :id => user.id}
