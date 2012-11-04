@@ -1,0 +1,5 @@
+<% if @folder.new_record? %>
+  alert("Failed to create folder");
+<% else %>
+  $("#folders").append("<%= j render(@folder) %>");
+<% end %>

@@ -1,0 +1,11 @@
+- @page_title = "User Auth | Edit"
+.Edit_Form
+  %h1
+    = "Edit Name"
+  = form_tag(:action => 'update') do
+    %p
+      %center
+        = "Username"
+        = text_field_tag(:username)
+    %center
+      = submit_tag("Update", class:"btn btn-large btn-primary")

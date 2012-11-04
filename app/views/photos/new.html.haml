@@ -1,6 +1,3 @@
-%h1
-  ="New Photo" 
-
-= render 'form' 
-
-= link_to "Back to Library", :controller=> :photos, :action=> :index
+= form_for [@target_folder, @photo], :url => { :action => 'create' } do |f| 
+  = hidden_field_tag :folder_id, @target_folder.id 
+  = f.file_field :image 

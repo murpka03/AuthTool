@@ -1,0 +1,36 @@
+:javascript
+  var folders = #{@folders};
+
+-user = User.find(session[:user_id])
+//= hash
+=form_for user.folders.new(:parent_id=>nil) do |f|
+  = f.label :name, "Enter New Folder Name:"
+  = f.text_field :name
+  = f.hidden_field :user_id
+  = f.submit 'Create a new Folder'
+
+
+%script#folder_template{:type => "text/x-handlebars-template"}
+  .folder
+    //= render (Folder.find('1'))
+    //-link = render(Folder.find('FOLDER'))
+    //=link.sub!('FOLDER','{{folder_id}}').html_safe
+    //= partial.sub('ID','{{folder_id}}').html_safe
+#explorer
+  -if !user.folders.empty?
+    -user.folders.each do |folder|
+      -if folder.id?
+        .folder_link
+          %br
+            = image_tag('folder.png')
+            = folder.name
+            = "folder_id #{folder.id}, parent id: #{folder.parent_id}"
+            = link_to "delete", folder, :confirm => 'Are you sure?', :method => :delete
+        -folder.childs.each do |f|
+          %center
+            = image_tag('folder.png')
+            = "folder_id #{f.id}, parent id: #{f.parent_id}"
+            = link_to f.name, :controller=> :folders, :action=> :show,:folder_id=>f.id,:user_id=> user.id, :parent_id=> f.parent_id
+            = link_to "delete", f, :confirm => 'Are you sure?', :method => :delete
+          %br
+#file_view

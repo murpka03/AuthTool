@@ -3,7 +3,19 @@ class ApplicationController < ActionController::Base
   protected
   
   before_filter :reset_session
+  before_filter :require_existing_target_folder
+  
+  helper_method :library, :current_user
+  
   @@session = false
+  
+  def library
+    session[:library] ||= Library.new
+  end
+  
+  def current_user
+    @current_user ||= User.find_by_id(session[:user_id])
+  end
   
   def reset_session
     puts "reset session"
@@ -35,4 +47,10 @@ class ApplicationController < ActionController::Base
         return true
       end
     end
+    
+  def require_existing_target_folder
+      #dummy target folder for time being
+      @targer_folder = Folder.new
+  end
+   
 end

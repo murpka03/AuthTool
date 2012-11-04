@@ -1,22 +1,23 @@
-class PhotosController < ApplicationController 
+class PhotosController < ApplicationController
+  
+  before_filter :require_existing_photo, :only => [:show, :edit, :update, :destroy]
+  before_filter :require_existing_target_folder, :only => [:new, :create]
+  
   def index
     @photos = Photo.all
   end
   
   def new
-    @photo = Photo.new(:user_id => params[:user_id])
+    @photo = Photo.new(:folder_id=> params[:folder_id])
   end
-  
+
   def show
     @photo = Photo.find(params[:id])
   end
   
   def create
-    @user = User.find(session[:user_id])
     @photo = Photo.create(params[:photo])
-    @photo.user_id = @user.id
-    @photo.save
-    redirect_to :action => 'index'
+    redirect_to :controller=>:library, :action=>:show, :user_id=> params[:user_id]
   end
   
   def edit
@@ -36,8 +37,15 @@ class PhotosController < ApplicationController
   def destroy
     @photo = Photo.find(params[:id])
     @photo.destroy
+    redirect_to :controller=>:library, :action=>:show,:user_id=>current_user.id
     flash[:notice] = "Successfully destroyed painting."
-    redirect_to @photo.library
+  end
+  
+  def require_existing_photo
+    @photo = Photo.find(params[:id])
+    @folder = @photo.folder
+  rescue ActiveRecord::RecordNotFound
+    redirect_to Folder.root, :alert => t(:already_deleted, :type => t(:this_file))
   end
   
 end

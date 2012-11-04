@@ -1,0 +1,12 @@
+-user = User.find(session[:user_id])
+%h1
+  .User_Header
+    ="#{@current_user.username}'s Profile"
+%h2
+  =link_to 'Edit user info', {:controller => 'users', :action => 'edit'}
+  
+#folder_button
+  =link_to 'View File Library',{:controller=>'library',:action=>'show',:user_id=> @current_user.id}
+  
+
+
