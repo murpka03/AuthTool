@@ -1,10 +1,29 @@
+=javascript_include_tag 'toggle.js'
 -user = User.find(session[:user_id])
 %h1
   .User_Header
-    ="#{@current_user.username}'s Profile"
+    -if user.is_admin == false
+      ="#{user.username}'s Profile"
+    -else
+      ="Administration"
+      
+-if user.is_admin == nil
+  =button_tag "Users", {:class => 'btn btn-large btn-primary btn-toggle'}
+  #User_Table
+    %table{:class => "collapsable"}
+      -User.all.each do |user|
+        %tr
+          %td
+            .left-element
+              =user.username
+          %td
+            .right-element
+              =button_to "remove",  {:controller => 'users', :action => 'destroy', :id => user.id}, {:class => "btn btn-large btn-remove"}
+
 %h2
   =link_to 'Edit user info', {:controller => 'users', :action => 'edit'}
-  
+
 #folder_button
   =link_to 'View File Library',{:controller=>'library',:action=>'show',:user_id=> @current_user.id}
-
+#tour_button
+  =link_to 'View Tour Page',{:controller=>'tours',:action=>'show',:user_id=>current_user.id, :tour_id=>Tour.first.id}

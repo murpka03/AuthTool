@@ -1,0 +1,18 @@
+-tour = Tour.find(params[:tour_id])
+%html
+  %head
+    %meta{:content => "initial-scale=1.0, user-scalable=no", :name => "viewport"}/
+    %script{:src => "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false", :type => "text/javascript"}
+  %body
+    %h1 Battle of Kitten Ridge
+    %br
+      %p{:align => "right"}
+        Find location:
+        %input#searchTextField{:type => "text"}
+      #map_canvas
+      #site_form
+        = form_for tour.sites.new, :remote => true, :html => { :multipart => true } do |site|
+          = site.hidden_field :latitude, :id => "latitude"
+          = site.hidden_field :longitude, :id => "longitude"
+          = site.hidden_field :tour_id
+          = site.submit "save marker"

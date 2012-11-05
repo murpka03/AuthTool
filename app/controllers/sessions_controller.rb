@@ -36,7 +36,13 @@ class SessionsController < ApplicationController
   end
 
   def profile
-    
+    if session[:user_id].nil?
+      redirect_to :action=> 'login'
+    else
+      @user = User.find session[:user_id]
+      @admin = @user.is_admin
+      @users = User.all
+    end
   end
 
   def setting

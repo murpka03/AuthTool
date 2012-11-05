@@ -1,0 +1,173 @@
+<h1>Listing landmarks</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Address</th>
+    <th>Longitude</th>
+    <th>Latitude</th>
+    <th>Gmaps</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @sites.each do |site| %>
+  <tr>
+    <td><%= site.name %></td>
+    <td><%= site.address %></td>
+    <td><%= site.longitude %></td>
+    <td><%= site.latitude %></td>
+    <td><%= site.gmaps %></td>
+    <td><%= link_to 'Show', site %></td>
+    <td><%= link_to 'Edit', edit_site_path(site) %></td>
+    <td><%= link_to 'Destroy', site, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= link_to "Tour", {:controller=>:tours,:action=>:show,:user_id=>current_user.id} %><br>
+<%= link_to 'New Landmark', new_site_path %><br>
+<%= form_for @site, :remote => true, :html => { :multipart => true } do |f| %>
+  <%= f.hidden_field :latitude, :id => "latitude" %>
+  <%= f.hidden_field :longitude, :id => "longitude" %>
+  <%= f.submit "save marker" %>
+<% end %>s
+<input type="text" id="searchTextField">
+<input id="arrow" name="toolbar" type="radio" checked="checked"/>
+<label for="arrow">Arrow Tool</label>
+<input id="landmark" name="toolbar" type="radio" />
+<label for="landmark">Site Tool</label>
+<br>
+<%= gmaps({"markers" => {"data" => @json}, 
+           "map_options" => {"type" => "HYBRID", "auto_zoom" => false, "libraries" => ["places"]},
+           }) %>
+
+<% content_for :scripts do %>
+    <script type="text/javascript" charset="utf-8">
+      var lat = $("#latitude");
+      var lng = $("#longitude");
+      function set_latlng_to_input(marker){
+        lat.val(marker.getPosition().lat());
+        lng.val(marker.getPosition().lng());
+      }
+      //search text field
+      var defaultBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(-33.8902, 151.1759),
+      new google.maps.LatLng(-33.8474, 151.2631));
+
+      var input = document.getElementById('searchTextField');
+      var options = {
+        bounds: defaultBounds,
+        types: ['geocode']
+      };
+      autocomplete = new google.maps.places.Autocomplete(input, options);
+
+      google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        var place = autocomplete.getPlace();
+        if (!place.geometry) {
+          // Inform the user that a place was not found and return.
+          return;
+        }
+        // If the place has a geometry, then present it on a map.
+        //if (place.geometry.viewport) {
+          // Use the viewport if it is provided.
+         // Gmaps.map.serviceObject.fitBounds(place.geometry.viewport);
+        //} 
+        else {
+          // Otherwise use the location and set a chosen zoom level.
+          Gmaps.map.serviceObject.setCenter(place.geometry.location);
+          Gmaps.map.serviceObject.setZoom(18);
+        }
+      });
+
+      //callback function
+      Gmaps.map.callback = function() {
+
+        //center map if no markers exist
+        if(Gmaps.map.markers.length == 0){
+          var centerpoint = new google.maps.LatLng(39.8309293 , -77.2310955);
+          Gmaps.map.serviceObject.setCenter(centerpoint);
+          Gmaps.map.serviceObject.setZoom(18);
+        }
+
+        if (Gmaps.map.markers.length == 1) {
+         //only one marker, choose the zoom level you expect
+         Gmaps.map.serviceObject.setZoom(18);
+        }
+        else{
+         //more than one marker, let's auto_zoom
+         Gmaps.map.map_options.auto_zoom = true;
+         Gmaps.map.adjustMapToBounds();
+        }
+
+        // On click, clear markers(disabled), place a new one, update coordinates in the form
+        google.maps.event.addListener(Gmaps.map.serviceObject, 'click', function(event) {
+          //clearOverlays();
+          if(document.getElementById("landmark").checked){
+            placeMarker(event.latLng);
+            updateFormLocation(event.latLng);
+          }
+        });
+      }
+
+      var markersArray = [];
+      if(Gmaps.map.markers){
+        markersArray = Gmaps.map.markers;
+      }
+      var count = markersArray.length;
+
+      // Update form attributes with given coordinates
+      function updateFormLocation(latLng) {
+        $('#site_attributes_latitude').val(latLng.lat());
+        $('#site_attributes_longitude').val(latLng.lng());
+        $('#site_attributes_gmaps_zoom').val(Gmaps.map.serviceObject.getZoom());
+      }
+
+      // Add a marker
+      function placeMarker(latLng) {
+        var marker = new google.maps.Marker({
+          position: latLng, 
+          map: Gmaps.map.serviceObject,
+          draggable: true
+        });
+        markersArray.push(marker);
+        count++;
+        updateInfoWindow(count, marker);
+        // Listen to drag & drop
+        google.maps.event.addListener(marker, 'drag', function() {
+          this['infowindow'].close();
+        });
+        google.maps.event.addListener(marker, 'dragend', function() {
+          updateFormLocation(this.getPosition());
+          updateInfoWindow(this['infowindow'].zindex, marker);
+        });
+      }
+
+      //update infowindow
+      function updateInfoWindow(i, m){
+        var marker = m;
+        // Set infowindow
+        marker['infowindow'] = new google.maps.InfoWindow({
+          zindex: i,
+          content: '<h2>Landmark ' + i + '</h2><p>Current Lat: ' + marker.position.lat() + '<br>Current Long: ' + marker.position.lng() + ' </p><p>Drag me to adjust my position.</p>'
+        });
+
+        //open infowindow on click
+        google.maps.event.addListener(marker, 'click', function() {
+          marker['infowindow'].open(Gmaps.map.serviceObject,marker); });
+          set_latlng_to_input(marker);
+      }
+
+      // Removes the overlays from the map
+      function clearOverlays() {
+        if (markersArray) {
+          for (var i = 0; i < markersArray.length; i++ ) {
+            markersArray[i].setMap(null);
+          }
+        }
+        markersArray.length = 0;
+      }
+    </script>
+<% end %>

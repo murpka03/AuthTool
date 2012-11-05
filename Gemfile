@@ -6,7 +6,7 @@ gem 'rails', '3.2.8'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
-
+gem 'gmaps4rails'
 #password encryption
 gem 'bcrypt-ruby', :require => 'bcrypt'
 

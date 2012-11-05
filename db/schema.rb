@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 20120919225024) do
     t.string   "email"
     t.string   "encrypted_password"
     t.string   "salt"
+    t.boolean  "is_admin"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
   end
@@ -29,6 +30,22 @@ ActiveRecord::Schema.define(:version => 20120919225024) do
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
     
+  end
+  
+  create_table "tours", :force => true do |t|
+    t.string "name"
+    t.integer "user_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false    
+  end
+  
+  
+  create_table "sites", :force => true do |t|
+    t.float    "longitude"
+    t.float    "latitude"
+    t.integer "tour_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
   
   create_table "photos", :force => true do |t|

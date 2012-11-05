@@ -12,7 +12,8 @@
 
 %script#folder_template{:type => "text/x-handlebars-template"}
   .folder
-    //= render (Folder.find('1'))
+    -if Folder.first
+      = render (Folder.first)
     //-link = render(Folder.find('FOLDER'))
     //=link.sub!('FOLDER','{{folder_id}}').html_safe
     //= partial.sub('ID','{{folder_id}}').html_safe
@@ -24,12 +25,10 @@
           %br
             = image_tag('folder.png')
             = folder.name
-            = "folder_id #{folder.id}, parent id: #{folder.parent_id}"
             = link_to "delete", folder, :confirm => 'Are you sure?', :method => :delete
         -folder.childs.each do |f|
           %center
             = image_tag('folder.png')
-            = "folder_id #{f.id}, parent id: #{f.parent_id}"
             = link_to f.name, :controller=> :folders, :action=> :show,:folder_id=>f.id,:user_id=> user.id, :parent_id=> f.parent_id
             = link_to "delete", f, :confirm => 'Are you sure?', :method => :delete
           %br

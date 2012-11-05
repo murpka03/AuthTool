@@ -1,4 +1,5 @@
--@page_title = "User Auth | Signup" 
+-@page_title = "User Auth | Signup"
+=javascript_include_tag 'hideelement.js'
 .Sign_Form
   %h1
     = "Sign up"
@@ -18,6 +19,9 @@
     %center
       %p
         = "Password Confirmation:"
-        = f.password_field :password_confirmation 
+        = f.password_field :password_confirmation
+    .hidden
+      ="This is hidden"
+      =f.check_box :is_admin
     %center
       = f.submit "create"

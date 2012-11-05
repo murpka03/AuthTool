@@ -1,0 +1,6 @@
+<% if @site.new_record? %>
+  alert("Failed to create site");
+<% else %>
+  $("#sites").append("<%= j render(@site) %>");
+  alert("site saved to the system");
+<% end %>
