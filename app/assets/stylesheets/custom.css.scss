@@ -44,30 +44,88 @@ h2 {
     color: #999;
 }
 
+h3 {
+    display: inline-block;
+}
+
 p {
     font-size: 1.1em;
     line-height: 1.7em;
 }
 
 /* custom error message format */
-div#error {
+#error {
     font-size: 1.1em;
     color: red;
 }
 
 /* My own signin stuff */
-div#Sign_Form {
+#Sign_Form {
     
     text-align: center;
     
 }
 
 /* Custom list of users */
-div#User_Table {
+#User_Table {
     text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }
 
+
 /* Hide the admin check box */
-div#hidden_admin_button {
+#hidden_admin_button {
     
+}
+
+/* Hidden */
+.hidden {
+    display: none;
+}
+
+/*Custom button, supposed to be large */
+.btn-toggle
+{
+    display: block;
+    text-align: center;
+    width: 75%;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-remove
+{
+    display: inline-block;
+    padding: 2%;
+    width: 75%;
+    height: 40px;
+}
+
+table.collapsable
+{
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+
+table.collapsable th {
+    border: 1px solid black;
+}
+
+table.collapsable tr {
+    border: 1px solid black;
+}
+
+.left-element {
+    float:left;
+}
+
+.right-element {
+    float:right;
 }

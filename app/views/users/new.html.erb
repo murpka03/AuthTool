@@ -1,5 +1,6 @@
 <% @page_title = "User Auth | Signup" %>
-<%= javascript_include_tag 'hideelement.js' %>
+<!-- this isn't included anymore, but I'm keeping it here for reference -->
+<!--<%= javascript_include_tag 'hideelement.js' %> -->
 
   <div class="Sign_Form">
     <h1>Sign up</h1>
@@ -10,7 +11,7 @@
       <center><p>Password: </br> <%= f.password_field :password%></p></center>
       <center><p>Password Confirmation:</br> <%=f.password_field :password_confirmation %></p></center>
       
-      <div id="hidden_admin_button">This is hidden<%=f.check_box :is_admin %></div> 
+      <div class="hidden">This is hidden<%=f.check_box :is_admin %></div> 
       <!--<center><p>This is normally hidden: admin </br> <%=f.check_box :is_admin %></p></center>  This line will be deleted later -->
       
       <center><%= f.submit %> </center>

@@ -1,14 +1,27 @@
+=javascript_include_tag 'toggle.js'
+
 %h1
   .User_Header
-    ="#{@current_user.username}'s Profile"
-%h2
-  =link_to 'Edit user info', {:controller => 'users', :action => 'edit'}
+    -if @admin == false
+      ="#{@current_user.username}'s Profile"
+    -else
+      ="Administration"
+-#%h2
+-#  =link_to 'Edit user info', {:controller => 'users', :action => 'edit'}
 
 #photo_button
   =link_to 'View Photo Page', {:controller => 'photos', :action => 'index', :user_id => @current_user.id}
 
 -if @admin
-  %div#User_Table
-    -@users.each do |user|
-      =user.username
-      =button_to "Delete User", {:controller => 'users', :action => 'destroy', :id => user.id}
+  =button_tag "Users", {:class => 'btn btn-large btn-primary btn-toggle'}
+  #User_Table
+    %table{:class => "collapsable"}
+      -@users.each do |user|
+        %tr
+          %td
+            .left-element
+              =user.username
+          %td
+            .right-element
+              =button_to "remove",  {:controller => 'users', :action => 'destroy', :id => user.id}, {:class => "btn btn-large btn-remove"}
+              
