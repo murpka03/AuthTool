@@ -14,22 +14,37 @@ class FoldersController < ApplicationController
 
   # Note: @folder is set in require_existing_folder
   def show
-    @folder 
+    @folder = Folder.find(params[:folder_id])
+    
+     respond_to do |format|
+      format.html
+     end
+     #redirect_to :controller=>:library, :action=>:show
   end
 
   # Note: @target_folder is set in require_existing_target_folder
   def new
-    @folder = Folder.new(:user_id => current_user.id,:parent_id=>params[:folder_id])
+    @folder = Folder.new(:user_id => @current_user.id,:parent_id=>params[:folder_id])
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
   # Note: @target_folder is set in require_existing_target_folder
   def create
      @folder = Folder.create(params[:folder])
-      
-    if @folder.save
-      redirect_to(:controller=>:library, :action=>:show, :user_id=>@folder.user_id)
-    else
-      render :action => 'new'
-    end
+     @folder.user_id = current_user.id
+     @folder.save!
+     respond_to do |format|
+      format.html {render 'sessions/profile'}
+      format.js
+     end
+    #  
+    #if @foldesr.save
+    #  redirect_to(:controller=>:sessions, :action=>:profile, :user_id=>current_user.id)
+    #else
+    #  render :action => 'new'
+    #end
   end
   
   def parent_of?(folder)
@@ -67,10 +82,10 @@ class FoldersController < ApplicationController
 
   # Note: @folder is set in require_existing_folder
   def destroy
-    @folder = Folder.find(params[:id])
+    @folder = Folder.find(params[:folder_id])
     id = @folder.user_id
     @folder.destroy
-    redirect_to(:controller=> :library, :action=>:show, :user_id=>id)
+    redirect_to :controller=>:sessions,:action=>:profile,:user_id=>id
   end
 
   

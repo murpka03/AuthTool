@@ -3,8 +3,6 @@ $(function(){
     var map;
     var markers = [];
     var line;
-    var latt;
-    var langg;
     
     function initialize() {
       var mapOptions = {
@@ -14,6 +12,11 @@ $(function(){
         mapTypeId: google.maps.MapTypeId.HYBRID
       };
       map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+      //$.get('/profile/3/sites',function(dat){
+        //dat.split(',')
+        //alert(dat[0]);
+      //}).success(function(){alert("success!")}).error(function() { alert("error"); })
+           // .complete(function() { alert("complete"); });
       line = new google.maps.Polyline({
         map: map,
         strokeColor: "#FF0000",
@@ -26,7 +29,7 @@ $(function(){
           line.getPath().removeAt(event.vertex);
         }
       });
-    
+        
       google.maps.event.addListener(map, 'click', function(event) {
         var marker = new google.maps.Marker({
           map: map,
@@ -34,8 +37,6 @@ $(function(){
           draggable: true
         });
     
-        
-        set_latlng_to_input(marker);
         markers.push(marker);
         var index = getMarkerNum(marker);
         updateInfoWindow(index, marker);
@@ -63,6 +64,12 @@ $(function(){
           marker['infowindow'].close();
           updateInfoWindow(marker['infowindow'].zindex, marker);
         });
+         google.maps.event.addListener(marker, 'rightclick', function(event) {
+            if(confirm('Delete this site?')){
+              deleteMarker(marker);
+            }
+          });
+         
       });
     
       //search text field
@@ -70,6 +77,7 @@ $(function(){
       var options = {
         types: ['geocode']
       };
+    
     
       autocomplete = new google.maps.places.Autocomplete(input, options);
     
@@ -91,6 +99,17 @@ $(function(){
         }
       });
     }
+    
+     function deleteMarker(m){
+
+        for(var i =0; i < markers.length; i++){
+          if(markers[i].position.lat() == m.position.lat() && markers[i].position.lng() == m.position.lng() ){
+            m.setMap(null);
+            markers.splice(i,1);
+            break;
+          }
+        }
+      }
     
     //update infowindow
     function updateInfoWindow(i, m){
@@ -119,17 +138,21 @@ $(function(){
       }
       return points.length; //new marker added to end of path
     }
-        latt = $("#latitude");
-        lngg = $("#longitude");
+        
     function set_latlng_to_input(marker){
-        latt.val(marker.getPosition().lat());
-        lngg.val(marker.getPosition().lng());
+        //$("#latitude").val(marker.getPosition().lat());
+        //$("#longitude").val(marker.getPosition().lng());
     }
     
     $("#site_form").click(function(){
-       
+        alert("Sites saved successfully");
         for(var i = 0; i < markers.length; i++){
-          set_latlng_to_input(markers[i]);   
+            var lat = markers[i].position.lat();
+            var lng = markers[i].position.lng();
+          $.post("/sites",{longitude: lng, latitude:lat, tour_id: '1' },function(){
+            
+          }
+          );
         }
         
     })
@@ -154,9 +177,12 @@ $(function(){
       }
       line.setPath(points);
     }
-    $(window).load(function(){
+    $(document).ready(function(){
         initialize();
-        
+        $('.pic').bind('dragend',function( event ){
+                alert("Photo added to site");
+                });
+
     });
     
 });

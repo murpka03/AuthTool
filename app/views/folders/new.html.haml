@@ -1,5 +1,5 @@
-= form_for @folder do |f| 
-  = f.label :name
-  = f.text_field :name
-  = f.submit 'Create'
+= form_for Folder.new do |f| 
+  = f.text_field :name,{:placeholder=>"enter folder name"}
+  = f.hidden_field :user_id
+  = f.submit 'Create',{:class=>'btn btn-info'}
 

@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
     authorized_user = User.authenticate(params[:username_or_email],params[:login_password])
     if authorized_user
       session[:user_id] = authorized_user.id
-      flash[:notice] = "Welcome again, you logged in as #(authorized_user.username)"
+      flash[:notice] = "Welcome again, you logged in as #{authorized_user.username}"
       redirect_to(:action => 'profile')
     else
       @attempt = false
@@ -42,6 +42,7 @@ class SessionsController < ApplicationController
       @user = User.find session[:user_id]
       @admin = @user.is_admin
       @users = User.all
+      @current_user = @user
     end
   end
 

@@ -1,3 +1,6 @@
-= form_for [@target_folder, @photo], :url => { :action => 'create' } do |f| 
-  = hidden_field_tag :folder_id, @target_folder.id 
-  = f.file_field :image 
+-folder = Folder.find(params[:folder_id])
+=form_for folder.photos.new do |f|
+  = f.text_field :name
+  = f.hidden_field :folder_id
+  = f.file_field :image, multiple: true, name: "photo[image]"
+  = f.submit 'add photo'  

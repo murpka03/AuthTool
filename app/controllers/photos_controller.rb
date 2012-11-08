@@ -9,15 +9,22 @@ class PhotosController < ApplicationController
   
   def new
     @photo = Photo.new(:folder_id=> params[:folder_id])
+     
   end
 
   def show
     @photo = Photo.find(params[:id])
+    respond_to do |format|
+      format.html
+     end
   end
   
   def create
     @photo = Photo.create(params[:photo])
-    redirect_to :controller=>:library, :action=>:show, :user_id=> params[:user_id]
+    respond_to do |format|
+      format.js
+      format.html
+    end
   end
   
   def edit
@@ -27,7 +34,7 @@ class PhotosController < ApplicationController
   def update
     @photo = Photo.find(params[:id])
     if @photo.update_attributes(params[:photo])
-      flash[:notice] = "Successfully updated painting."
+      flash[:notice] = "Photo removed from library."
       redirect_to @photo.library
     else
       render :action => 'edit'
@@ -35,17 +42,15 @@ class PhotosController < ApplicationController
   end
 
   def destroy
-    @photo = Photo.find(params[:id])
+    @photo = Photo.find(params[:photo_id])
     @photo.destroy
-    redirect_to :controller=>:library, :action=>:show,:user_id=>current_user.id
-    flash[:notice] = "Successfully destroyed painting."
+    redirect_to :controller=>:sessions, :action=>:profile,:user_id=>current_user.id
+    flash[:notice] = "Photo removed from library."
   end
   
   def require_existing_photo
-    @photo = Photo.find(params[:id])
-    @folder = @photo.folder
-  rescue ActiveRecord::RecordNotFound
-    redirect_to Folder.root, :alert => t(:already_deleted, :type => t(:this_file))
+    @photo = Photo.find(params[:photo_id])
+    
   end
   
 end

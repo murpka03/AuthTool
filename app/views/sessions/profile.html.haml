@@ -1,14 +1,18 @@
 =javascript_include_tag 'toggle.js'
+=stylesheet_link_tag 'profile.css.scss'
 -user = User.find(session[:user_id])
 %h1
   .User_Header
     -if user.is_admin == false
       ="#{user.username}'s Profile"
+      %br
+      
+      %br
     -else
       ="Administration"
       
 -if user.is_admin == nil
-  =button_tag "Users", {:class => 'btn btn-large btn-primary btn-toggle'}
+  =button_tag "Users", {:class => 'btn btn-large btn-info btn-toggle'}
   #User_Table
     %table{:class => "collapsable"}
       -User.all.each do |user|
@@ -19,11 +23,30 @@
           %td
             .right-element
               =button_to "remove",  {:controller => 'users', :action => 'destroy', :id => user.id}, {:class => "btn btn-large btn-remove"}
-
-%h2
-  =link_to 'Edit user info', {:controller => 'users', :action => 'edit'}
-
-#folder_button
-  =link_to 'View File Library',{:controller=>'library',:action=>'show',:user_id=> @current_user.id}
-#tour_button
-  =link_to 'View Tour Page',{:controller=>'tours',:action=>'show',:user_id=>current_user.id, :tour_id=>Tour.first.id}
+- if user.is_admin == false
+  #preview
+  %h2
+    ="File Library:"
+  #folder_form
+    = render :template=>'folders/new',:remote=>true
+  #file_explorer
+    -if !user.folders.empty?
+      %table{:class=>"table table-condensed"}
+        -user.folders.reverse.each do |folder|
+          -if folder.id?
+            = render folder
+  #button_panel
+    #edit_button
+      =button_tag "User Info", {:class => "btn btn-info btn-toggle"}
+    #tour_button
+      =button_tag 'Tours', {:class => 'btn btn-info btn-toggle1'}
+  #Tour_Table
+    %table{:class => "collapsable1"}
+      -user.tours.each do |tour|
+        %tr
+          %td
+            .left-element
+              =tour.name
+          %td
+            .right-element
+              =button_to "view tour", {:controller=>:tours,:action=>:show,:tour_id=>tour.id},{:class=>'btn btn-info'}

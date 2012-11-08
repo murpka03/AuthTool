@@ -1,7 +1,19 @@
+#profile_button{
+    
+}
 #site_form{
-    position: absolute;
+    float:left
 }
 #map_canvas {
     height: 600px;
-    width: 600px
+    width: 900px;
+    float: left
     }
+#file_display{
+    float:left;
+    .pic{
+        display: inline;
+        float:left
+    }
+   
+}

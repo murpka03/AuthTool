@@ -1,5 +1,8 @@
-.photo
-  = link_to image_tag(photo.image_url(:thumb).to_s), photo if photo.image? 
-  .name
-    = photo.name
-  
+:javascript
+  var photo = #{photo.image}
+%tr
+  %td
+    .photo
+      =image_tag(photo.image)
+      .delete
+        =button_to 'x',{:controller=>:photos,:action=>:destroy,:photo_id=>photo.id},{:class=>'btn btn-danger'}

@@ -1,0 +1,98 @@
+@import "bootstrap";
+#preview{
+    float:left;
+    width:200px;
+    height:200px;
+    background-color: #EEE;
+    margin-bottom:200px;
+}
+h2{
+  float:left;
+  margin-top:200px;
+  margin-left:-200px;
+}
+#folder_form{
+  float:left;
+  margin-top:250px;
+  margin-left:-200px;
+}
+#file_explorer{
+    float:left;
+    overflow:auto;
+    margin-left:-250px;
+    margin-top:300px;
+    width: 300px;
+    height:600px;
+    background-color: #EEE;
+    .table-condensed{
+        width:400px;
+        height:100px;
+        tr{
+            
+            td{
+                .folder{
+                    margin-right:200px;
+                    
+                    img{
+                        float:left;
+                    }
+                      .name{
+                        h3{
+                            
+                        }
+                      }
+                      .delete{
+                        .btn-danger{
+                            width:1px;
+                        }
+                        float:right;
+                      }
+                      .add{
+                        .btn-info{
+                            width:1px;
+                        }
+                       float:right;
+                      }
+                    }
+                .photos{
+                    float:right;
+                    width:400px;
+                        .table-hover{
+                            width:400px;
+                            tr{
+                                td{
+                                     .photo{
+                                        margin-right:100px;
+                                        img{
+                                          float:right;
+                                          width:50px;
+                                          height:50px;
+                                        }
+                                        .delete{
+                                            .btn-danger{
+                                                width:1px;
+                                            }
+                                            float:right;
+                                        }
+                                }
+                            }
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }  
+}
+
+#button_panel{
+  margin-left:500px;
+  
+}
+table.collapsable1
+{
+    margin-left: 500px;
+    width: 30%;
+    border: 2px solid black;
+    border-collapse: collapse;
+}

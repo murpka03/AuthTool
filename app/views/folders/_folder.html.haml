@@ -1,21 +1,22 @@
--user = current_user
-.folder
-  .name
-    = folder.name
-  .files
-  -if !folder.photos.empty?
-    -folder.photos.each do |photo|
-      = render photo
-      %br
-      = link_to "remove", photo, :confirm => 'Are you sure?', :method => :delete
-=form_for folder.childs.new(:parent_id=>folder.id) do |child|
-  = child.text_field :name
-  = child.hidden_field :parent_id
-  = child.submit 'Create a new Folder'
+=stylesheet_link_tag 'profile.css.scss'
+-user = User.find(current_user.id)
+-if folder.id
+  %tr
+    %td
+      .folder
+        =image_tag('folder.png')
+        .name
+          %h3
+            = folder.name
+        .delete
+          =button_to 'x',{:controller=>:folders,:action=>:destroy,:folder_id=>folder.id,:remote=>true},{:class=>'btn btn-danger'}
+        .add
+          =button_to '+',{:controller=>:photos,:action=>:new,:folder_id=>folder.id,:remote=>true},{:class=>'btn btn-info'}
+      .photos
+        %table{:class => "table-hover"}
+          -folder.photos.each do |photo|
+            = render photo
+                
 
-=form_for folder.photos.new do |f|
-  = f.text_field :name
-  = f.hidden_field :folder_id
-  = f.file_field :image, multiple: true, name: "photo[image]"
-  = f.submit 'add photo'  
+
   

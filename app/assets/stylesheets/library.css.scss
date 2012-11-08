@@ -1,7 +1,31 @@
-#explorer{
-    float: left;
+@import "bootstrap";
+#button_form{
+    
 }
 
-#file_view{
-    float: right;
+#explorer{
+    padding-top:10px;
+    width: 300px;
+    height:600px;
+    float:left;
+    background-color: #EEE;
+    
+    .folder{
+        width:300px;
+        margin: 0 auto;
+        .photo{
+            margin-left: 20px;
+            img{
+                float:left;
+            }
+            .name{
+                float:right;
+            }
+        }
+    }
+    #create{
+        padding-top:400px;
+        width:10px;
+        height:10px;
+    }
 }

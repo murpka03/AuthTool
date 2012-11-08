@@ -10,11 +10,12 @@ class SitesController < ApplicationController
     #  ]
     # @polylines = @polylines.to_json
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @sites }
-    end
-
+    #respond_to do |format|
+    #  format.html # index.html.erb
+    #  format.json { render json: @sites }
+    #
+    @sites = @sites.to_json
+    
   end
    # GET /characters/1
   # GET /characters/1.json
@@ -25,6 +26,8 @@ class SitesController < ApplicationController
       format.html # show.html.erb
       format.json { render json: @site }
     end
+    #@sites = Site.all
+    #@sites = @sites.to_json
   end
 
   # GET /characters/new
@@ -46,8 +49,8 @@ class SitesController < ApplicationController
   # POST /characters
   # POST /characters.json
   def create
-    @site = Site.create(params[:site])
-    redirect_to :controller=>:tour, :action=>:show, :user_id=>current_user.id,:tour_id=>@site.tour_id
+    @site = Site.create(:longitude=>params[:longitude],:latitude=>params[:latitude],:tour_id=>params[:tour_id])
+    #redirect_to :controller=>:tours, :action=>:show,:tour_id=>@site.tour_id,:user_id=>current_user.id
     #respond_to do |format|
     #  if @site.save
     #    format.html { redirect_to @site, notice: 'Character was successfully created.' }

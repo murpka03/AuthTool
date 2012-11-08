@@ -1,4 +1,5 @@
 -tour = Tour.find(params[:tour_id])
+-user = User.find(@current_user.id)
 %html
   %head
     %meta{:content => "initial-scale=1.0, user-scalable=no", :name => "viewport"}/
@@ -9,10 +10,21 @@
       %p{:align => "right"}
         Find location:
         %input#searchTextField{:type => "text"}
-      #map_canvas
+      #profile_button
+        =button_to 'Back to Profile',{:controller=>'sessions',:action=>'profile',:user_id=> current_user.id},{:class => 'btn btn-large btn-primary'}
       #site_form
-        = form_for tour.sites.new, :remote => true, :html => { :multipart => true } do |site|
-          = site.hidden_field :latitude, :id => "latitude"
-          = site.hidden_field :longitude, :id => "longitude"
-          = site.hidden_field :tour_id
-          = site.submit "save marker"
+        =button_tag "Save Sites", {:class => 'btn btn-large btn-primary'} 
+      #map_canvas
+    #preview
+    %h2
+      ="File Library:"
+    #folder_form
+      = render :template=>'folders/new',:remote=>true
+    #file_explorer
+      -if !user.folders.empty?
+        %table{:class=>"table table-condensed"}
+          -user.folders.reverse.each do |folder|
+            -if folder.id?
+              = render folder
+      
+    
