@@ -1,42 +1,12 @@
-:javascript
-  var folders = #{@folders};
-
--user = User.find(session[:user_id])
-//= hash
-=button_to 'Back to Profile',{:controller=>'sessions',:action=>'profile',:user_id=> current_user.id},{:class => 'btn btn-large btn-primary'}
+-user = User.find(current_user.id)
+#preview
+%h2
+  ="File Library:"
 #folder_form
-  =form_for user.folders.new(:parent_id=>nil) do |f|
-    = f.text_field :name,{:placeholder=>"enter folder name"}
-    = f.hidden_field :user_id
-    = f.submit 'create',{:class=>'btn btn-primary'}
-
-
-%script#folder_template{:type => "text/x-handlebars-template"}
-  .folder
-    //= render (Folder.find('2'))
-    -link = link_to('{{folder_name}}',:controller=>'folders',:action=>'show',:folder_id=>'REPLACE',:user_id=>current_user.id, :remote=>true)
-    = link.sub('REPLACE','{{folder_id}}').html_safe
-%h4
-  = "#{user.username}s File Library:"
-%br
+  = render :template=>'folders/new',:remote=>true
 #file_explorer
   -if !user.folders.empty?
     %table{:class=>"table-condensed"}
-      -user.folders.each do |folder|
+      -user.folders.reverse.each do |folder|
         -if folder.id?
-          %tr
-            %td
-              .folder
-                =image_tag('folder.png')
-                = folder.name
-                //= link_to "delete", folder, :confirm => 'Are you sure?', :method => :delete
-                -folder.photos.each do |photo|
-                  %table{:class => "table table-condensed table-hover"}
-                    %tr
-                      %td
-                        .photo
-                          =image_tag('dcam.png')
-                          .name
-                            = photo.image.to_s.split('/').last
-    #create
-      =button_tag "new",{:class => 'btn btn-primary'}
+          = render folder

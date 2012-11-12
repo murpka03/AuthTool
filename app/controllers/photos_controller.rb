@@ -9,13 +9,16 @@ class PhotosController < ApplicationController
   
   def new
     @photo = Photo.new(:folder_id=> params[:folder_id])
-     
+    respond_to do |format|
+      format.html {render 'sessions/profile'}
+      format.js
+    end
   end
 
   def show
     @photo = Photo.find(params[:id])
     respond_to do |format|
-      format.html
+      format.js
      end
   end
   
@@ -23,7 +26,7 @@ class PhotosController < ApplicationController
     @photo = Photo.create(params[:photo])
     respond_to do |format|
       format.js
-      format.html
+      format.html {render 'sessions/profile'}
     end
   end
   

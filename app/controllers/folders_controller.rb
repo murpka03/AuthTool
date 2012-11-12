@@ -36,7 +36,7 @@ class FoldersController < ApplicationController
      @folder.user_id = current_user.id
      @folder.save!
      respond_to do |format|
-      format.html {render 'sessions/profile'}
+      format.html {render 'sessions'}
       format.js
      end
     #  

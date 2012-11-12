@@ -9,11 +9,11 @@
           %h3
             = folder.name
         .delete
-          =button_to 'x',{:controller=>:folders,:action=>:destroy,:folder_id=>folder.id,:remote=>true},{:class=>'btn btn-danger'}
+          =button_to 'x',{:controller=>:folders,:action=>:destroy,:folder_id=>folder.id},:class=>'btn btn-danger'
         .add
-          =button_to '+',{:controller=>:photos,:action=>:new,:folder_id=>folder.id,:remote=>true},{:class=>'btn btn-info'}
+          =button_to '+',{:controller=>:photos,:action=>:new,:folder_id=>folder.id},:remote=>true,:class=>'btn btn-info'
       .photos
-        %table{:class => "table-hover"}
+        %table{:class =>"table-hover"}
           -folder.photos.each do |photo|
             = render photo
                 

@@ -1,8 +1,6 @@
-:javascript
-  var photo = #{photo.image}
 %tr
   %td
     .photo
-      =image_tag(photo.image)
+      =image_tag(photo.image.url)
       .delete
         =button_to 'x',{:controller=>:photos,:action=>:destroy,:photo_id=>photo.id},{:class=>'btn btn-danger'}
