@@ -25,7 +25,6 @@
             .right-element
               =button_to "remove",  {:controller => 'users', :action => 'destroy', :id => user.id}, {:class => "btn btn-large btn-remove"}
 - if user.is_admin == false
-  #preview
   %h2
     ="File Library:"
   #folder_form
@@ -42,8 +41,15 @@
     #tour_button
       =button_tag 'Tours', {:class => 'btn btn-info btn-toggle1'}
   #Tour_Table
-    %table{:class => "collapsable1"}
-      -user.tours.each do |tour|
+    %table{:class => "collapsable1 table table-hover"}
+      %tr
+        %td
+          .left-element
+            ="New Tour"
+        %td
+          .right-element
+            =button_to '+',{:controller=>:tours,:action=>:new,:user_id=>user.id},:remote=>true,:class=>'btn btn-info'
+      -user.tours.each do |tour|    
         %tr
           %td
             .left-element

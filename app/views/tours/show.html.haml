@@ -1,5 +1,7 @@
 -tour = Tour.find(params[:tour_id])
 -user = User.find(@current_user.id)
+:javascript
+  var msites = #{@sites}
 %html
   %head
     %meta{:content => "initial-scale=1.0, user-scalable=no", :name => "viewport"}/

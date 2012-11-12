@@ -12,11 +12,9 @@ $(function(){
         mapTypeId: google.maps.MapTypeId.HYBRID
       };
       map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-      //$.get('/profile/3/sites',function(dat){
-        //dat.split(',')
-        //alert(dat[0]);
-      //}).success(function(){alert("success!")}).error(function() { alert("error"); })
-           // .complete(function() { alert("complete"); });
+      for(var i = 0; i< msites.length; i++){
+        placeMarker(msites[i]);
+      }
       line = new google.maps.Polyline({
         map: map,
         strokeColor: "#FF0000",
@@ -110,6 +108,14 @@ $(function(){
           }
         }
       }
+      
+      function placeMarker(m){
+        var marker = new google.maps.Marker({
+          map: map,
+          position: new google.maps.LatLng(m['latitude'] , m['longitude']),
+          draggable: true
+        });
+      }
     
     //update infowindow
     function updateInfoWindow(i, m){
@@ -179,9 +185,7 @@ $(function(){
     }
     $(document).ready(function(){
         initialize();
-        $('.pic').bind('dragend',function( event ){
-                alert("Photo added to site");
-                });
+        
 
     });
     

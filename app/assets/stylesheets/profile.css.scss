@@ -1,29 +1,21 @@
 @import "bootstrap";
-#preview{
-    float:left;
-    width:200px;
-    height:200px;
-    background-color: #EEE;
-    margin-bottom:200px;
-}
 h2{
   float:left;
-  margin-top:200px;
-  margin-left:-200px;
+ 
 }
 #folder_form{
   float:left;
-  margin-top:250px;
-  margin-left:-200px;
+  margin-left: -100px;
+  margin-top:50px;
 }
 #file_explorer{
     float:left;
     overflow:auto;
-    margin-left:-250px;
-    margin-top:300px;
-    width: 300px;
+    margin-left:-300px;
+    margin-top:100px;
+    width: 350px;
     height:600px;
-    background-color: #EEE;
+    
     .table-condensed{
         width:400px;
         height:100px;
@@ -87,12 +79,10 @@ h2{
 
 #button_panel{
   margin-left:500px;
-  
+  margin-top: 50px;
 }
 table.collapsable1
 {
     margin-left: 500px;
     width: 30%;
-    border: 2px solid black;
-    border-collapse: collapse;
 }
