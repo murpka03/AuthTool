@@ -1,5 +1,5 @@
 <% if @folder.new_record? %>
   alert("Failed to create folder");
 <% else %>
-  $(".table-condensed").prepend("<%= j render @folder %>");
+  $(".table-condensed").prepend("<%= j render folder %>");
 <% end %>

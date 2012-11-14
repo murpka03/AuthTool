@@ -1,51 +1,14 @@
-h2{
-  float:left;
- 
-}
-#folder_form{
-    margin:0px;
-    padding:0px;
-    position:absolute;
-    opacity:0;
-}
-
-#library_buttons{
-    position:relative;
-    margin-top:40px;
-    margin-left:-100px;
-    float:left;
-     #new_fol{
-      float:left;
-     }
-     #new_pho{
-        float:left;
-     }
-     #delete_tool{
-        float:right;
-        .btn{
-            height:22px;
-        }
-     }
-}
-#file_explorer{
-    display:table;
-    float:left;
-    overflow:scroll;
-    margin-left:-100px;
-    margin-top:75px;
-    width: 200px;
-    height:600px;
-    
-    .table-condensed{
-        width:200px;
-        overflow: auto;
-        tr{   
-            td{
+.table-hover{
+  float:left;     
+  width:200px;
+            .fol{
+              display:inline;
+                td{
                 .add_folder{
                    display:none;
                 }
                 .folder{
-                    padding-right:200px;
+                    margin-left:50px;
                     padding:20px;
                     img{
                         float:left;
@@ -74,6 +37,6 @@ h2{
                     }
             }
         }
+        
     }
-   
-}
+  

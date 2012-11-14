@@ -15,7 +15,6 @@ class FoldersController < ApplicationController
   # Note: @folder is set in require_existing_folder
   def show
     @folder = Folder.find(params[:folder_id])
-    
      respond_to do |format|
       format.html
      end
@@ -24,9 +23,9 @@ class FoldersController < ApplicationController
 
   # Note: @target_folder is set in require_existing_target_folder
   def new
-    @folder = Folder.new(:user_id => @current_user.id,:parent_id=>params[:folder_id])
+    @folder = Folder.new(:parent_id=>params[:parent_id])
     respond_to do |format|
-      format.html
+      format.html {render 'sessions/profile'}
       format.js
     end
   end
@@ -36,8 +35,8 @@ class FoldersController < ApplicationController
      @folder.user_id = current_user.id
      @folder.save!
      respond_to do |format|
-      format.html {render 'sessions'}
       format.js
+      format.html {render 'sessions/profile'}
      end
     #  
     #if @foldesr.save

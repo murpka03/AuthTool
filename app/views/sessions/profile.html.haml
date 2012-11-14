@@ -25,16 +25,7 @@
             .right-element
               =button_to "remove",  {:controller => 'users', :action => 'destroy', :id => user.id}, {:class => "btn btn-large btn-remove"}
 - if user.is_admin == false
-  %h2
-    ="File Library:"
-  #folder_form
-    = render :template=>'folders/new',:remote=>true
-  #file_explorer
-    -if !user.folders.empty?
-      %table{:class=>"table-condensed"}
-        -user.folders.reverse.each do |folder|
-          -if folder.id?
-            = render folder
+  =render :template=>'library/show'
   #button_panel
     #edit_button
       =button_tag "User Info", {:class => "btn btn-info btn-toggle"}

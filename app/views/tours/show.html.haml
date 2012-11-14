@@ -7,7 +7,8 @@
     %meta{:content => "initial-scale=1.0, user-scalable=no", :name => "viewport"}/
     %script{:src => "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false", :type => "text/javascript"}
   %body
-    %h1 Battle of Kitten Ridge
+    %h1
+      =tour.name
     %br
       %p{:align => "right"}
         Find location:
@@ -17,16 +18,6 @@
       #site_form
         =button_tag "Save Sites", {:class => 'btn btn-large btn-primary'} 
       #map_canvas
-    #preview
-    %h2
-      ="File Library:"
-    #folder_form
-      = render :template=>'folders/new',:remote=>true
-    #file_explorer
-      -if !user.folders.empty?
-        %table{:class=>"table table-condensed"}
-          -user.folders.reverse.each do |folder|
-            -if folder.id?
-              = render folder
+    =render :template=>'library/show'
       
     

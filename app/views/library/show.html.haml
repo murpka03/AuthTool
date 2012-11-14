@@ -1,12 +1,18 @@
 -user = User.find(current_user.id)
-#preview
 %h2
   ="File Library:"
 #folder_form
-  = render :template=>'folders/new',:remote=>true
+  =button_to '+',{:controller=>:folders,:action=>:new,:user_id=>user.id,:parent_id=>nil},:remote=>true,:class=>'btn btn-info'
+#library_buttons
+  #new_fol
+    = button_tag image_tag('folder.png')
+  #new_pho
+    = button_tag image_tag('dcam.png')
+  #delete_tool
+    = button_tag 'X', {:class=>'btn btn-danger'}
 #file_explorer
   -if !user.folders.empty?
     %table{:class=>"table-condensed"}
       -user.folders.reverse.each do |folder|
-        -if folder.id?
-          = render folder
+        -if folder.id? && !folder.parent_id?
+          = render folder, :as=>:folder

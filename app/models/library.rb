@@ -10,8 +10,13 @@ class Library
   def photos
     Photo.find_all_by_id(@photos)
   end
+  
+  def contents
+    @contents
+  end
 
   def add(item)
+    @contents << item.id unless @contents.include?(item.id)
     if item.class == Folder
       @folders << item.id unless @folders.include?(item.id)
     else
@@ -38,6 +43,6 @@ class Library
   private
 
   def setup
-    @folders, @photos = [], []
+    @folders, @photos, @contents = [], [], []
   end
 end

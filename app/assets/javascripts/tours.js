@@ -27,22 +27,37 @@ $(function(){
           line.getPath().removeAt(event.vertex);
         }
       });
-        
-      google.maps.event.addListener(map, 'click', function(event) {
+      
+    }
+     
+    
+     function deleteMarker(m){
+
+        for(var i =0; i < markers.length; i++){
+          if(markers[i].position.lat() == m.position.lat() && markers[i].position.lng() == m.position.lng() ){
+            m.setMap(null);
+            markers.splice(i,1);
+            break;
+          }
+        }
+      }
+      
+      function placeMarker(m){
         var marker = new google.maps.Marker({
           map: map,
-          position: event.latLng,
+          position: new google.maps.LatLng(m['latitude'] , m['longitude']),
           draggable: true
         });
-    
         markers.push(marker);
-        var index = getMarkerNum(marker);
-        updateInfoWindow(index, marker);
-        var position = 0;
-        if(markers.length != 1){ //last marker so far
-          position = line.getPath().length;
-        }
-        drawLine(position, marker.getPosition());
+         google.maps.event.addListener(map, 'click', function(event) {
+    
+            var index = getMarkerNum(marker);
+            updateInfoWindow(index, marker);
+            var position = 0;
+            if(markers.length != 1){ //last marker so far
+              position = line.getPath().length;
+            }
+            drawLine(position, marker.getPosition());
     
         google.maps.event.addListener(marker, 'mouseover', function(event) {
           marker['infowindow'].open(map,marker);
@@ -67,55 +82,8 @@ $(function(){
               deleteMarker(marker);
             }
           });
-         
-      });
-    
-      //search text field
-      var input = document.getElementById('searchTextField');
-      var options = {
-        types: ['geocode']
-      };
-    
-    
-      autocomplete = new google.maps.places.Autocomplete(input, options);
-    
-      google.maps.event.addListener(autocomplete, 'place_changed', function() {
-        var place = autocomplete.getPlace();
-        if (!place.geometry) {
-          // Inform the user that a place was not found and return.
-          return;
-        }
-        // If the place has a geometry, then present it on a map.
-        //if (place.geometry.viewport) {
-          // Use the viewport if it is provided.
-          // Gmaps.map.serviceObject.fitBounds(place.geometry.viewport);
-        //} 
-        else {
-          // Otherwise use the location and set a chosen zoom level.
-          map.setCenter(place.geometry.location);
-          map.setZoom(18);
-        }
-      });
-    }
-    
-     function deleteMarker(m){
-
-        for(var i =0; i < markers.length; i++){
-          if(markers[i].position.lat() == m.position.lat() && markers[i].position.lng() == m.position.lng() ){
-            m.setMap(null);
-            markers.splice(i,1);
-            break;
-          }
-        }
-      }
-      
-      function placeMarker(m){
-        var marker = new google.maps.Marker({
-          map: map,
-          position: new google.maps.LatLng(m['latitude'] , m['longitude']),
-          draggable: true
         });
-      }
+    }
     
     //update infowindow
     function updateInfoWindow(i, m){

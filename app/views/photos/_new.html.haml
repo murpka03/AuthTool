@@ -1,6 +1,6 @@
 -folder = Folder.find(params[:folder_id])
 %h3
-  = "Choose file or drag into area!"
+  = "Choose file"
 =form_for folder.photos.new do |f|
   = f.hidden_field :folder_id
   #ffield
