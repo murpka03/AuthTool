@@ -1,0 +1,6 @@
+.source
+  .source_image
+    =image_tag(source.image)
+  =button_to 'x',{:controller=>:sources,:action=>:destroy,:source_id=>source.id},{:class=>'btn btn-danger'}
+  .edit_icon
+    =image_tag('file.png')

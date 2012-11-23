@@ -3,10 +3,10 @@ h2{
  
 }
 #folder_form{
+  display:none;
     margin:0px;
     padding:0px;
-    position:absolute;
-    opacity:0;
+    
 }
 
 #library_buttons{
@@ -30,50 +30,10 @@ h2{
 #file_explorer{
     display:table;
     float:left;
-    overflow:scroll;
+    overflow:auto;
     margin-left:-100px;
     margin-top:75px;
     width: 200px;
     height:600px;
     
-    .table-condensed{
-        width:200px;
-        overflow: auto;
-        tr{   
-            td{
-                .add_folder{
-                   display:none;
-                }
-                .folder{
-                    padding-right:200px;
-                    padding:20px;
-                    img{
-                        float:left;
-                    }
-                      .name{
-                        h3{
-                            
-                        }
-                      }
-                      .delete{
-                         display:none;
-                        visibility: hidden;
-                        .btn-danger{
-                            display:none;
-                            width:.5px;
-                        }
-                      }
-                      .add{
-                        display:none;
-                        visibility: hidden;
-                        .btn-info{
-                            display:none;
-                            width:1px;
-                        }
-                      }
-                    }
-            }
-        }
-    }
-   
 }

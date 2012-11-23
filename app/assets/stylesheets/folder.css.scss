@@ -1,42 +1,36 @@
-.table-hover{
-  float:left;     
-  width:200px;
-            .fol{
-              display:inline;
-                td{
-                .add_folder{
-                   display:none;
-                }
-                .folder{
-                    margin-left:50px;
-                    padding:20px;
-                    img{
-                        float:left;
-                    }
-                      .name{
-                        h3{
-                            
-                        }
-                      }
-                      .delete{
-                         display:none;
-                        visibility: hidden;
-                        .btn-danger{
-                            display:none;
-                            width:.5px;
-                        }
-                      }
-                      .add{
-                        display:none;
-                        visibility: hidden;
-                        .btn-info{
-                            display:none;
-                            width:1px;
-                        }
-                      }
-                    }
-            }
-        }
-        
+.fol{
+  padding:10px;
+    .add_folder{
+       display:none;
     }
+    .folder{
+        display:table-row;
+        padding:20px;
+        img{
+        float:left;
+        }
+          .name{
+            display:table-row;
+            h3{
+                
+            }
+          }
+          .delete{
+             display:none;
+            .btn{
+                display:none;
+                width:.5px;
+            }
+          }
+          .add{
+            display:none;
+          .btn{
+              display:none;
+              width:1px;
+            }
+          }
+      }
+}
+
+
   

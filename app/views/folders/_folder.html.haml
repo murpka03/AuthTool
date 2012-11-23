@@ -1,28 +1,23 @@
-=stylesheet_link_tag 'library.css.scss'
 -user = User.find(current_user.id)
 -if folder.id
-  %tr{:class=>'fol'}
-    %td
-      .add_folder
-        =button_to '+',{:controller=>:folders,:action=>:new,:parent_id=>folder.id},:remote=>true,:class=>'CRAZY btn-info'
-      .folder
-        =image_tag('folder.png')
-        .name
-          %h3
-            = folder.name
-        .delete
-          =button_to 'x',{:controller=>:folders,:action=>:destroy,:folder_id=>folder.id},:class=>'btn btn-danger'
-        .add
-          =button_to '+',{:controller=>:photos,:action=>:new,:folder_id=>folder.id},:remote=>true,:class=>'btn btn-info'
+  .fol
+    .add_folder
+      =button_to '+',{:controller=>:folders,:action=>:new,:parent_id=>folder.id, :user_id=>user.id},:remote=>true,:class=>'CRAZY btn-info'
+    .folder
+      =image_tag('folder.png')
+      .name
+        %h3
+          = folder.name
+      .delete
+        =button_to 'x',{:controller=>:folders,:action=>:destroy,:folder_id=>folder.id},:class=>'btn btn-danger'
+      .add
+        =button_to '+',{:controller=>:photos,:action=>:new,:folder_id=>folder.id},:remote=>true,:class=>'btn btn-info'
   -if !folder.photos.empty?
-    %table{:class =>"photos"}
-      -folder.photos.each do |photo|
-        = render photo
-  .folders
-  -if !folder.childs.empty?
-    %table{:class =>"table-hover"}
-      -folder.childs.each do |child|
-        = render child, :as=>:folder
+    -folder.photos.each do |photo|
+      =render photo
+-if !folder.childs.empty?
+  -folder.childs.each do |child|
+    = render child, :as=>:folder
   
           
 

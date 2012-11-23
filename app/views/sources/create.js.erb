@@ -1,0 +1,5 @@
+<% if @source.new_record? %>
+  alert("Failed to associate source");
+<% else %>
+   $("#sources").append("<%= j render @source %>");
+<% end %>

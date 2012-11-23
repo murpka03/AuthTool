@@ -1,4 +1,4 @@
--user = User.find(current_user.id)
+-user = User.find(params[:user_id])
 -if (params[:parent_id]) != nil
   -parent = Folder.find(params[:parent_id])
   = form_for parent.childs.new do |f| 

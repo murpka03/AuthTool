@@ -12,7 +12,8 @@
     = button_tag 'X', {:class=>'btn btn-danger'}
 #file_explorer
   -if !user.folders.empty?
-    %table{:class=>"table-condensed"}
-      -user.folders.reverse.each do |folder|
-        -if folder.id? && !folder.parent_id?
-          = render folder, :as=>:folder
+    %table{:id=>'folder_table',:class=>"table-condensed"}
+      %tbody
+        -user.folders.reverse.each do |folder|
+          -if folder.id? && !folder.parent_id?
+            = render folder, :as=>:folder

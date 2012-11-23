@@ -1,5 +1,8 @@
 <% if @folder.new_record? %>
   alert("Failed to create folder");
 <% else %>
-  $(".table-condensed").prepend("<%= j render folder %>");
+  $("#file_explorer#folder_table").find('tbody')
+    .append($('%tr')
+      .append($('%td')
+        .append("<%= j render folder %>")));
 <% end %>

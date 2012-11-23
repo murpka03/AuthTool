@@ -14,7 +14,8 @@ class PhotosController < ApplicationController
       format.js
     end
   end
-
+  
+  
   def show
     @photo = Photo.find(params[:id])
     respond_to do |format|
@@ -36,11 +37,9 @@ class PhotosController < ApplicationController
 
   def update
     @photo = Photo.find(params[:id])
-    if @photo.update_attributes(params[:photo])
-      flash[:notice] = "Photo removed from library."
-      redirect_to @photo.library
-    else
-      render :action => 'edit'
+    if params[:site_id]
+      @photo.site_id = params[:site_id]
+      @photo.save!
     end
   end
 

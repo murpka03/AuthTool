@@ -55,5 +55,20 @@ ActiveRecord::Schema.define(:version => 20120919225024) do
     t.datetime "updated_at"
     t.string   "image"
   end
+  create_table "sources", :force => true do |t|
+    t.integer  "site_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "image"
+  end
+  
+  create_table "descriptions", :force => true do |t|
+    t.integer  "source_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
 
 end

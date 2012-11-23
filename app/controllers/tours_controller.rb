@@ -1,6 +1,6 @@
 class ToursController < ApplicationController
 
-
+ 
    # Note: @target_folder is set in require_existing_target_folder
   def new
     @tour = Tour.new(params[:id])
@@ -29,5 +29,6 @@ class ToursController < ApplicationController
     @tour = current_user.tours.find(params[:tour_id])
     @sites = @tour.sites.to_json
   end
+  
 
 end

@@ -14,12 +14,32 @@
     height: 600px;
     width: 600px;
     float: left
-    }
-#file_display{
+}
+
+#preview{
+    width:500px;
+    height:300px;
     float:left;
-    .pic{
-        display: inline;
-        float:left
+    background-color:#EEE;
+    position:relative
+}
+#editor{
+    width:500px;
+    height:300px;
+    float:left;
+    position:absolute;
+    z-index: 50;
     }
-   
+
+#library{
+    display:inline;
+}
+#sources{
+    background-color: #EEE;
+    width:100px;
+    height:500px;
+    float:right;
+    h4{
+        
+    }
 }

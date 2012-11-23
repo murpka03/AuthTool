@@ -1,8 +1,8 @@
 class SitesController < ApplicationController
 
   def index
-    @site = Site.new
-    @sites = Site.all
+    #@site = Site.new
+    
     #@json = Site.all.to_gmaps4rails
     # @polylines = [
     #   {"lng": -80.190262, "lat": 25.774252, "strokeColor": "#000"},
@@ -14,34 +14,30 @@ class SitesController < ApplicationController
     #  format.html # index.html.erb
     #  format.json { render json: @sites }
     #
-    @sites = @sites.to_json
-    
   end
-   # GET /characters/1
-  # GET /characters/1.json
+   # GET /sites/1
+  # GET /sites/1.json
   def show
     @site = Site.find(params[:id])
-
     respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @site }
+      format.js
+      format.html
     end
-    #@sites = Site.all
-    #@sites = @sites.to_json
+  
   end
 
-  # GET /characters/new
-  # GET /characters/new.json
+  # GET /sites/new
+  # GET /sites/new.json
   def new
     @site = Site.new(:longitude=>params[:longitude],:latitude=>params[:latitude],:tour_id=>params[:tour_id])
-
+  #explicitly designate tourid in create
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @site }
+      format.json { render json:@site }
     end
   end
 
-  # GET /characters/1/edit
+  
   def edit
     @site = Site.find(params[:id])
   end
@@ -50,17 +46,9 @@ class SitesController < ApplicationController
   # POST /characters.json
   def create
     @site = Site.create(:longitude=>params[:longitude],:latitude=>params[:latitude],:tour_id=>params[:tour_id])
-    #redirect_to :controller=>:tours, :action=>:show,:tour_id=>@site.tour_id,:user_id=>current_user.id
-    #respond_to do |format|
-    #  if @site.save
-    #    format.html { redirect_to @site, notice: 'Character was successfully created.' }
-    #    format.json { render json: @site, status: :created, location: @site }
-    #  else
-    #    format.html { render action: "new" }
-    #    format.json { render json: @site.errors, status: :unprocessable_entity }
-    #  end
-    #end
   end
+  
+  #action to add source materials to a site
 
   # PUT /characters/1
   # PUT /characters/1.json
@@ -76,6 +64,11 @@ class SitesController < ApplicationController
         format.json { render json: @site.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  def add_sources
+    @site = Site.find(params[:id])
+    
   end
 
   # DELETE /characters/1

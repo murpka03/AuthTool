@@ -1,16 +1,19 @@
 $(document).ready(function($){
    var selected;
-   $('.photo img').click(function(e){
+   $('.photo img').dblclick(function(e){
       $.facebox($('<img>',{
          src: this.src
       }));
+   });
+   $('.photo').click(function(e){
+     selected = $(this);
    });
    $(".fol").click(function(e){
       if(selected){
          selected.find('.folder').css('background-color','white');
       }
     $(this).find('.folder').css('background-color', '#EEE');
-    selected = $(this);
+     selected = $(this);
    });
    $(".fol").dblclick(function(e){
     //add behavior

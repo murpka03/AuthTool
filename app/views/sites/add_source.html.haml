@@ -1,0 +1,5 @@
+-site = Site.find(:first)
+
+=form_for site.add_source do |f|
+  =f.collection_select(:photo,:image, Photo.all,:id,:name)
+  =f.submit "associate photo"

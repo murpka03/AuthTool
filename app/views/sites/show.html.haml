@@ -1,0 +1,5 @@
+-site = @site
+-if !site.sources.empty?
+  -site.sources.each do |source|
+    =puts "source #{source.id}"
+    =render source 

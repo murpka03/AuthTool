@@ -1,8 +1,8 @@
 class Site < ActiveRecord::Base
 
-  
-
-  attr_accessible :latitude, :longitude, :tour_id
+  attr_accessible :latitude, :longitude, :tour_id, :photos, :sources
+  has_many :photos
+  has_many :sources
   validates_presence_of :tour
   belongs_to :tour
 
