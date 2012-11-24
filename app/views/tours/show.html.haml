@@ -1,0 +1,23 @@
+-tour = Tour.find(params[:tour_id])
+-user = User.find(@current_user.id)
+:javascript
+  var msites = #{@sites}
+%html
+  %head
+    %meta{:content => "initial-scale=1.0, user-scalable=no", :name => "viewport"}/
+    %script{:src => "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false", :type => "text/javascript"}
+  %body
+    %h1
+      =tour.name
+    %br
+      %p{:align => "right"}
+        Find location:
+        %input#searchTextField{:type => "text"}
+      #profile_button
+        =button_to 'Back to Profile',{:controller=>'sessions',:action=>'profile',:user_id=> current_user.id},{:class => 'btn btn-large btn-primary'}
+      #site_form
+        =button_tag "Save Sites", {:class => 'btn btn-large btn-primary'} 
+      #map_canvas
+    =render :template=>'library/show'
+      
+    

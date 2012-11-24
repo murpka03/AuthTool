@@ -1,0 +1,27 @@
+-@page_title = "User Auth | Signup"
+=javascript_include_tag 'hideelement.js'
+.Sign_Form
+  %h1
+    = "Sign up"
+  = form_for(:user, :url => {:controller => 'users', :action => 'create'}) do |f|
+    %center
+      %p
+        = "Username:"
+        = f.text_field :username 
+    %center
+      %p
+        = "Email:"
+        = f.text_field :email
+    %center
+      %p
+        = "Password:"
+        = f.password_field :password
+    %center
+      %p
+        = "Password Confirmation:"
+        = f.password_field :password_confirmation
+    .hidden
+      ="This is hidden"
+      =f.check_box :is_admin
+    %center
+      = f.submit "create"

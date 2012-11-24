@@ -1,0 +1,22 @@
+-user = current_user
+-folder = Folder.find(params[:folder_id])
+.folder
+  .name
+    = folder.name
+  -if !folder.photos.empty?
+    -folder.photos.each do |photo|
+      .photo
+        = render photo
+        %br
+        = link_to "remove", photo, :confirm => 'Are you sure?', :method => :delete
+//=form_for folder.childs.new(:parent_id=>folder.id) do |child|
+//  = child.text_field :name
+//  = child.hidden_field :parent_id
+//  = child.submit 'Create a new Folder'
+
+=form_for folder.photos.new do |f|
+  = f.text_field :name
+  = f.hidden_field :folder_id
+  = f.file_field :image, multiple: true, name: "photo[image]"
+  = f.submit 'add photo'  
+  

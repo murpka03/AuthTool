@@ -1,0 +1,5 @@
+= form_for @photo do |f|
+  = f.hidden_field :user_id
+  = f.label :image, "Upload photo:"
+  = f.file_field :image, multiple: true
+  = f.submit 

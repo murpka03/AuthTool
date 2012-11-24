@@ -1,0 +1,9 @@
+-folder = Folder.find(params[:folder_id])
+%h3
+  = "Choose file"
+=form_for folder.photos.new do |f|
+  = f.hidden_field :folder_id
+  #ffield
+    =button_tag 'choose',:id=>'choose',:class=>'btn btn-info'
+    = f.file_field :image, multiple: true, name: "photo[image]"
+  = f.submit 'add photo', :class=>'btn btn-info'

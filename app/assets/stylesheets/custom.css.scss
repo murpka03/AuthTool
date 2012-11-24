@@ -1,0 +1,159 @@
+@import "bootstrap";
+
+/* universal */
+
+html {
+    overflow-y: scroll;
+}
+
+body {
+    padding-top: 60px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.center {
+    text-align: center;
+}
+
+.center h1 {
+    margin-bottom: 10px;
+}
+
+/*  typography */
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1;
+}
+
+h1 {
+    font-size: 3em;
+    letter-spacing: -2px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.7em;
+    letter-spacing: -1px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: normal;
+    color: #999;
+}
+
+
+
+p {
+    font-size: 1.1em;
+    line-height: 1.7em;
+}
+
+/* custom error message format */
+#error {
+    font-size: 1.1em;
+    color: red;
+}
+
+/* My own signin stuff */
+#Sign_Form {
+    
+    text-align: center;
+    
+}
+
+/* Custom list of users */
+#User_Table {
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+
+/* Hide the admin check box */
+#hidden_admin_button {
+    
+}
+
+/* Hidden */
+.hidden {
+    display: none;
+}
+
+/*Custom button, supposed to be large */
+.btn-toggle
+{
+    display: block;
+    text-align: center;
+    width: 30%;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.btn-toggle1
+{
+    display: block;
+    text-align: center;
+    width: 30%;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.btn-remove
+{
+    display: inline-block;
+    padding: 2%;
+    width: 75%;
+    height: 40px;
+}
+
+.btn-edit
+{
+    display: inline-block;
+    padding: 2%;
+    width: 75%;
+    height: 40px;
+}
+
+table.collapsable
+{
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+
+
+
+table.collapsable th {
+    border: 1px solid black;
+}
+
+table.collapsable tr {
+    border: 1px solid black;
+}
+
+
+.left-element {
+    float:left;
+}
+
+.right-element {
+    float:right;
+}
+
+#lean_overlay {
+    position: fixed;
+    z-index:100;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    background: #000;
+    display: none;
+}

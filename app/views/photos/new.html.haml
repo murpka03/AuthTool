@@ -1,0 +1,6 @@
+-folder = Folder.find(params[:folder_id])
+=form_for folder.photos.new do |f|
+  = f.text_field :name
+  = f.hidden_field :folder_id
+  = f.file_field :image, multiple: true, name: "photo[image]"
+  = f.submit 'add photo'  

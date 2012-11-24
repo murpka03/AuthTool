@@ -1,0 +1,23 @@
+#facebox .content {
+		width: 300px !important;
+        height: 200px !important;
+        h3{
+            color:blue;
+        }
+        #new_photo{
+            #ffield{
+                #choose{
+                    position:absolute;
+                    .btn{
+                        width:30px;
+                    }
+                }
+                #photo_image{
+                    z-index: 2;
+                    opacity: 0;
+                    position: relative;
+                }
+            }
+           
+        }
+}

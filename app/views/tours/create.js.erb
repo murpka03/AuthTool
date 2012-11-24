@@ -1,0 +1,5 @@
+<% if @photo.new_record? %>
+  alert("Failed to upload photos");
+<% else %>
+  $("#Tour_Table").append("<%= j render 'tabledata' %>");
+<% end %>

@@ -1,0 +1,7 @@
+%tr
+  %td
+	.left-element
+	  =tour.name
+  %td
+	.right-element
+	  =button_to "view tour", {:controller=>:tours,:action=>:show,:tour_id=>tour.id},{:class=>'btn btn-info'}
