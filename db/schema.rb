@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 20120919225024) do
     t.string   "email"
     t.string   "encrypted_password"
     t.string   "salt"
+<<<<<<< HEAD
     t.boolean  "is_admin"
     t.boolean  "is_accepted"
     t.datetime "created_at",         :null => false
@@ -51,6 +52,15 @@ ActiveRecord::Schema.define(:version => 20120919225024) do
   
   create_table "photos", :force => true do |t|
     t.integer  "folder_id"        
+=======
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.boolean  "is_admin"
+  end
+
+  create_table "photos", :force => true do |t|
+    t.integer  "user_id"        
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"

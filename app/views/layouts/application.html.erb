@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<<<<<<< HEAD
   <title>Photos </title>
+=======
+  <title>Gettysburg Tour Tool</title>
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -24,9 +28,14 @@
               <li><%= link_to "Sign in", {:controller => 'sessions', :action => 'login'} %></li>
             <% end %>
             <% if session[:user_id] %>
+<<<<<<< HEAD
               <li><%= link_to "Edit user info", {:controller => 'user', :action => 'edit'}%></li>
               <li><%= link_to "Sign out", {:controller => 'sessions', :action => 'logout' } %></li>
             <% end %>
+=======
+              <li><%= link_to "Sign out", {:controller => 'sessions', :action => 'logout' } %></li>
+            <% end %>  
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
           </ul>
         </nav>
       </div>
@@ -38,6 +47,10 @@
       <% end %>
       <%= yield %>
     </div>
+<<<<<<< HEAD
 <%= yield :scripts %>
+=======
+
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
 </body>
 </html>

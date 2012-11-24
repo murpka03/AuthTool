@@ -5,8 +5,13 @@ gem 'rails', '3.2.8'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+<<<<<<< HEAD
 gem 'sqlite3-ruby', '1.3.3', :require => 'sqlite3'
 gem 'gmaps4rails'
+=======
+gem 'sqlite3'
+
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
 #password encryption
 gem 'bcrypt-ruby', :require => 'bcrypt'
 
@@ -42,8 +47,14 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'debugger'
 gem 'rack-raw-upload'
+<<<<<<< HEAD
 gem 'carrierwave', '0.7.1'
 #gem 'rmagick'
 gem 'haml' # YAML-style templates
 
 gem 'capistrano'
+=======
+gem 'carrierwave'
+#gem 'rmagick'
+gem 'haml' # YAML-style templates
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad

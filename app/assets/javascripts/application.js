@@ -14,7 +14,10 @@
 //= require jquery_ujs
 //= require jquery-fileupload/basic
 //= require jquery-fileupload/vendor/tmpl
+<<<<<<< HEAD
 //= require gmaps4rails/gmaps4rails.base
 //= require gmaps4rails/gmaps4rails.googlemaps
+=======
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
 //= require_tree .
 

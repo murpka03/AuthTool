@@ -17,7 +17,11 @@ class SessionsController < ApplicationController
     authorized_user = User.authenticate(params[:username_or_email],params[:login_password])
     if authorized_user
       session[:user_id] = authorized_user.id
+<<<<<<< HEAD
       flash[:notice] = "Welcome again, you logged in as #{authorized_user.username}"
+=======
+      flash[:notice] = "Welcome again, you logged in as "+(authorized_user.username)
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
       redirect_to(:action => 'profile')
     else
       @attempt = false
@@ -42,6 +46,7 @@ class SessionsController < ApplicationController
       @user = User.find session[:user_id]
       @admin = @user.is_admin
       @users = User.all
+<<<<<<< HEAD
       @current_user = @user
     end
   end
@@ -53,6 +58,10 @@ class SessionsController < ApplicationController
     UserMailer.welcome_email(@user).deliver 
     redirect_to :action => 'profile'
   end
+=======
+    end
+  end
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
 
   def setting
   end

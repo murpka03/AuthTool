@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 =javascript_include_tag 'toggle.js'
 
 %h1
@@ -30,3 +31,32 @@
                   =button_to "approve", {:controller => 'sessions', :action => 'accept_user', :id => user.id}, {:class => "btn btn-large btn-remove"}
                 
               
+=======
+=javascript_include_tag 'toggle.js'
+
+%h1
+  .User_Header
+    -if @admin == false
+      ="#{@current_user.username}'s Profile"
+    -else
+      ="Administration"
+-#%h2
+-#  =link_to 'Edit user info', {:controller => 'users', :action => 'edit'}
+
+#photo_button
+  =link_to 'View Photo Page', {:controller => 'photos', :action => 'index', :user_id => @current_user.id}
+
+-if @admin
+  =button_tag "Users", {:class => 'btn btn-large btn-primary btn-toggle'}
+  #User_Table
+    %table{:class => "collapsable"}
+      -@users.each do |user|
+        %tr
+          %td
+            .left-element
+              =user.username
+          %td
+            .right-element
+              =button_to "remove",  {:controller => 'users', :action => 'destroy', :id => user.id}, {:class => "btn btn-large btn-remove"}
+              
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad

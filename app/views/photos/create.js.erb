@@ -1,5 +1,9 @@
 <% if @photo.new_record? %>
   alert("Failed to upload photos");
 <% else %>
+<<<<<<< HEAD
   $(".table-condensed .photos").append("<%= j render photo %>");
+=======
+  $("#photos").append("<%= j render(@photo) %>");
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
 <% end %>

@@ -13,6 +13,10 @@ class UsersController < ApplicationController
   
   def create
     @user = User.new(params[:user])
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
         if @user.save
           flash[:notice] = "You Signed up"
           flash[:color]="valid"
@@ -27,6 +31,14 @@ class UsersController < ApplicationController
   def edit
     @user = User.find session[:user_id]
   end
+<<<<<<< HEAD
+=======
+  
+  def destroy
+    User.destroy params[:id]
+    redirect_to(:controller => 'sessions', :action => 'profile')
+  end
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
 
   def update
     @user = User.find session[:user_id]
@@ -39,6 +51,7 @@ class UsersController < ApplicationController
     end
   end
   
+<<<<<<< HEAD
   def destroy
     @user = User.find(params[:id])
     @user.destroy
@@ -46,5 +59,7 @@ class UsersController < ApplicationController
   end
   
   
+=======
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
   
 end

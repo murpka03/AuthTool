@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
@@ -18,3 +19,7 @@ jQuery ->
       if data.context
         progress = parseInt(data.loaded / data.total * 100, 10)
         data.context.find('.bar').css('width', progress + '%')
+=======
+jQuery ->
+  $('#new_photo').fileupload
+>>>>>>> 305715122f28973ce0ff144f2e716044eafea6ad
