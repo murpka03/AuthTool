@@ -1,0 +1,11 @@
+-folder = Folder.find(folder_id)
+:javascript
+  var folder_id = #{folder_id}
+-if folder.id
+  .label{:data=> {:fid => folder_id}}
+    =image_tag('folder.png',:style => 'margin-right: 20px;')
+    %h3
+      = folder.name
+    =link_to image_tag('remove_icon.png'),folder,{:method=>:delete,:confirm=>"are you sure?",:class=>'delete'}
+    =link_to image_tag('folder.png'),{:controller=>:folders,:action=>:new,:parent_id=>folder_id,:user_id=>folder.user_id},{:class=>'new_folder',:remote=>true}
+    =link_to image_tag('file.png'),{:controller=>:photos,:action=>:new,:folder_id=>folder_id},{:class=>'new_file',:remote=>true}

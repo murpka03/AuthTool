@@ -15,6 +15,13 @@ class SourcesController < ApplicationController
   
   def show
     @source = Source.find(params[:id])
+    if !params[:site_id].nil?
+      @source.site_id = params[:site_id]
+    end
+    if !params[:tour_id].nil?
+       @source.tour_id = params[:tour_id]
+    end
+    @source.save!
     respond_to do |format|
       format.html
       end
@@ -46,8 +53,10 @@ class SourcesController < ApplicationController
   def destroy
     @source = Source.find(params[:source_id])
     @source.destroy
-    redirect_to :controller=>:tours, :action=>:show
-    flash[:notice] = "Source removed from library."
+    respond_to do |format|
+      format.html { redirect_to 'sessions/profile' }
+      format.json { head :no_content }
+    end
   end
   
   

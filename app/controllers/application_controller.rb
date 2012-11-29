@@ -8,6 +8,9 @@ class ApplicationController < ActionController::Base
   helper_method :library, :current_user
   
   @@session = false
+  @@profile = false
+  @@tour_bool = false
+  @@current_tour = nil
   
   def library
     session[:library] ||= Library.new

@@ -1,0 +1,5 @@
+=stylesheet_link_tag 'photos.css.scss'
+.photo
+  =image_tag(photo.image.url)
+  .delete
+    =link_to image_tag('remove_icon.png'),{:controller=>:photos,:action=>:destroy,:photo_id=>photo.id}

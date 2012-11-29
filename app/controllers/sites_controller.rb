@@ -1,19 +1,7 @@
 class SitesController < ApplicationController
 
   def index
-    #@site = Site.new
     
-    #@json = Site.all.to_gmaps4rails
-    # @polylines = [
-    #   {"lng": -80.190262, "lat": 25.774252, "strokeColor": "#000"},
-    #   {"lng": -66.118292, "lat": 18.4664}
-    #  ]
-    # @polylines = @polylines.to_json
-
-    #respond_to do |format|
-    #  format.html # index.html.erb
-    #  format.json { render json: @sites }
-    #
   end
    # GET /sites/1
   # GET /sites/1.json
@@ -46,6 +34,8 @@ class SitesController < ApplicationController
   # POST /characters.json
   def create
     @site = Site.create(:longitude=>params[:longitude],:latitude=>params[:latitude],:tour_id=>params[:tour_id])
+    @site.tour_id = params[:tour_id]
+    @site.save!
   end
   
   #action to add source materials to a site
@@ -78,8 +68,8 @@ class SitesController < ApplicationController
     @site.destroy
 
     respond_to do |format|
-      format.html { redirect_to site_url }
-      format.json { head :no_content }
+      format.html { redirect_to 'sessions/profile'  }
+      
     end
   end
 end

@@ -2,4 +2,4 @@
 .photo
   =image_tag(photo.image.url)
   .delete
-    =button_to 'x',{:controller=>:photos,:action=>:destroy,:photo_id=>photo.id},{:class=>'btn btn-danger'}
+    =link_to image_tag('remove_icon.png'),photo,:method => :delete, :confirm => "Are you sure?"

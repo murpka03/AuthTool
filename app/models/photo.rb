@@ -7,11 +7,6 @@ class Photo < ActiveRecord::Base
   
   before_create :default_name
   
-  def add_to_site(site_id)
-    if !site_id.nil?
-      self.site_id = site_id
-    end
-  end
   def default_name
     self.name ||= File.basename(image.filename, '.*').titleize if image
   end

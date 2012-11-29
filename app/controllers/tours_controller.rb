@@ -17,17 +17,47 @@ class ToursController < ApplicationController
       format.html {render 'sessions/profile'}
       format.js
      end
-    #  
-    #if @foldesr.save
-    #  redirect_to(:controller=>:sessions, :action=>:profile, :user_id=>current_user.id)
-    #else
-    #  render :action => 'new'
-    #end
   end
+  
   def show
-    #@tour = current_user.tours.first
-    @tour = current_user.tours.find(params[:tour_id])
-    @sites = @tour.sites.to_json
+    @@profile = false
+    @@tour_bool = true
+    if !@@current_tour.nil?
+      @tour = current_user.tours.find(@@current_tour)
+    else
+      @tour = current_user.tours.find(params[:tour_id])
+      @@current_tour = @tour.id
+    end
+    @sources = []
+    @descriptions = []
+    @lines = []
+    @hotspots = []
+    @vertices = []
+    @tsites = []
+    @tour.sites.each do |site|
+      @tsites << site
+      site.sources.each do |source|
+        @sources << source
+        @descriptions << source.description
+      end
+    end
+     @tour.vertices.each do |vertex|
+      @vertices << vertex
+    end
+    @tour.hotspots.each do |hotspot|
+      @hotspots << hotspot
+    end
+    #if !@tour.lines.empty?
+    #  @tour.lines.each do |line|
+    #    @lines << line.to_json
+    #  end
+    #end
+    @tsites = @tsites.to_json
+    @sources = @sources.to_json
+    @descriptions = @descriptions.to_json
+    @lines = @lines.to_json
+    @vertices = @vertices.to_json
+    @hotspots = @hotspots.to_json
   end
   
 

@@ -1,39 +1,157 @@
 h2{
+  position:absolute;
+  top: 55px;
   float:left;
- 
 }
 #folder_form{
+  position:relative;
+  top: 0px;
   display:none;
-    margin:0px;
-    padding:0px;
-    
+  margin:0px;
+  padding:0px; 
 }
 
 #library_buttons{
-    position:relative;
-    margin-top:40px;
-    margin-left:-100px;
-    float:left;
-     #new_fol{
-      float:left;
-     }
-     #new_pho{
-        float:left;
-     }
-     #delete_tool{
-        float:right;
-        .btn{
-            height:22px;
-        }
-     }
+  display:block;
+  position: relative;
+  background-color:#EEE;
+  border: 5px outset black;
+  padding: 0 0 0 0;
+  width: 200px;
+  height: 22px;
+  left: 0px;
+  bottom: 30px;
+  float:left;
 }
+#new_folder{
+ float: left;
+}
+#new_photo{
+   float: left;
+}
+#delete_tool{
+  float: left;
+ }
 #file_explorer{
-    display:table;
-    float:left;
-    overflow:auto;
-    margin-left:-100px;
-    margin-top:75px;
-    width: 200px;
-    height:600px;
-    
+  overflow: hidden;
+  position: absolute;
+  display:block;
+  float:left;
+  background-color:#EEE;
+  border: 5px outset black;
+  left: 0px;
+  width: 600px;
+  height:300px;
 }
+#folder_table{
+  overflow: scroll;
+  position: absolute;
+  display:block;
+  float:left;
+  width:200px;
+  height:300px;
+}
+#photo_table{
+  display:block;
+  position: absolute;
+  background-color:white;
+  float:right;
+  right: 0px;
+  width:350px;
+  height:290px;
+}
+.label{
+  overflow: hidden;
+  background-color: #EEE;
+  left: 0px;
+  width: 190px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.label:hover{
+  background-color: black;
+}
+.label:active{
+  background-color: black;
+}
+.label img{
+  padding-right: 20px;
+  float: left;
+  position: absolute;
+}
+.label h3{
+  left: 20px;
+  position: absolute;
+}
+.label .delete{
+  display: none;
+  cursor: pointer;
+}
+.label:hover .delete{
+  display: block;
+  position: absolute;
+  width:20px;
+  height: 20px;
+  opacity: 1.0;
+  right:0px;
+}
+.label .new_folder{
+  display: none;
+  cursor: pointer;
+}
+
+.label:hover .new_folder{
+  display: block;
+  position: absolute;
+  width:20px;
+  height: 20px;
+  opacity: 1.0;
+  right: 30px;
+}
+.label .new_file{
+  display:none;
+  cursor: pointer;
+}
+.label:hover .new_file{
+  display: block;
+  position: absolute;
+  width:20px;
+  height: 20px;
+  opacity: 1.0;
+  right:60px;
+}
+.folder{
+  width:50px;
+  height:50px;
+  float: left;
+  padding: 10px;
+  position: relative;
+}
+.folder .delete{
+  width: 20px;
+  display: none;
+}
+.folder:hover{
+  cursor: pointer;
+}
+.folder h5{
+  display:none;
+}
+.folder:hover h5{
+  display: inline;
+}
+.folder:hover .delete{
+  display: block;
+  position: absolute;
+  top:5px;
+  right:5px;
+  opacity: 1.0;
+}
+.folder img{
+  width:50px;
+  height: 50px;
+}
+
+
+

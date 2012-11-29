@@ -1,45 +1,114 @@
 #facebox{
     text-align: center;
 }
-#name{
-    width:10px;
+#content{ width:100%;}
+#siteName{
+    border: 1px solid black;
 }
-#profile_button{
+#buttons{}
+#profile_button{ }
+#save_tour{}
+#map_canvas {
+    height: 400px;
+    width: 600px;
+    float: left;
+    margin-left: 50px;
+}
+#library{
     
 }
-#site_form{
-    float:left
+#library_buttons{
+    position:fixed;
+    bottom:215px;
+    left: 10px;
 }
-#map_canvas {
+#file_explorer{
+   position:fixed;
+   left: 10px;
+   bottom:10px;
+   height: 200px;
+   width: 600px;
+}
+#searchBar{
+    margin-left: 100px;
+}
+
+
+#editPane{
+    h1{
+        font-size-adjust: -10px;
+    }
+    display: block;
+    overflow: scroll;
     height: 600px;
     width: 600px;
-    float: left
+    float: left;
+    background-color:#EEE;
+    border: 5px outset black;
 }
 
 #preview{
-    width:500px;
-    height:300px;
-    float:left;
-    background-color:#EEE;
-    position:relative
+    display:inline-block;
+    width: 400px;
+    height: 400px;
+    float: left;
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid black;
+    object-fit: contain !important;
 }
-#editor{
-    width:500px;
-    height:300px;
-    float:left;
-    position:absolute;
-    z-index: 50;
-    }
 
-#library{
-    display:inline;
-}
 #sources{
+    top: 0px !important;
+    display:block;
     background-color: #EEE;
-    width:100px;
-    height:500px;
-    float:right;
+    width:165px;
+    height:400px;
+    float: right;
+    overflow-y: scroll;
+    border: 1px solid black;
     h4{
         
     }
+}
+.source{
+    border: 1px solid black;
+    height: 150px;
+    width: 150px;
+    position: relative;
+}
+.source .remove{
+    display: none;
+    cursor: pointer;
+}
+.source:hover > *{
+    opacity: .4;
+}
+.source:hover .remove{
+    content: "";
+    display: block;
+    background-image:url('/assets/remove_icon.png');
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 30px;
+    height: 30px;
+    opacity: 1.0;
+}
+.source .edit{
+    display: none;
+    cursor: pointer;
+}
+.source:hover .edit{
+    content: "";
+    display: block;
+    background-image:url('file.png');
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    float:left;
+    width: 30px;
+    height: 30px;
+    opacity: 1.0;
 }

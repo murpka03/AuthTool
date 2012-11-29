@@ -1,45 +1,56 @@
-$(document).ready(function($){
+function display_folder(folder_id){
+   $.get('/folders/'+folder_id,function(){});
+}
+
+$(document).ready(function(){
    var selected;
-   $('.photo img').dblclick(function(e){
+   var selectedFolder;
+   $('#photo_table').delegate('.photo img','dblclick',function(e){
+      e.preventDefault();
+      e.stopPropagation();
       $.facebox($('<img>',{
          src: this.src
       }));
    });
-   $('.photo').click(function(e){
-     selected = $(this);
+   $('#photo_table').delegate('.folder','dblclick',function(e){
+      $('#photo_table').html('');
+      $.get('/folders/'+selectedFolder,function(){});
    });
-   $(".fol").click(function(e){
-      if(selected){
-         selected.find('.folder').css('background-color','white');
-      }
-    $(this).find('.folder').css('background-color', '#EEE');
-     selected = $(this);
+   $('#photo_table').delegate('.folder','click',function(e){
+      selectedFolder = $(this).data('fid');
    });
-   $(".fol").dblclick(function(e){
-    //add behavior
-   });
-   $(".fol").hover(function(e){
-    //add behavior
-   });
-   $('#new_fol').live('click',function(e){
-      e.preventDefault();
-      if(selected){
-         selected.find('.add_folder .CRAZY').trigger('click');
+   $(".label").click(function(){
+     selectedFolder = $(this).data('fid');
+   })
+   $(".label").mouseenter(function(){
+   })
+    $(".label").mouseleave(function(){
+   })
+    $('#folder_table').click(function() {
+    });
+   $(".label").dblclick(function(e){
+      selectedFolder = $(this).data('fid');
+      $('#photo_table').html("");
+      display_folder(selectedFolder);
+   })
+   $('#new_folder').click(function(){
+      alert(user_id);
+      if(selectedFolder){
+         $.get('/folders/new',{parent_id: selectedFolder, user_id: user_id},function(){});
       }
       else{
-         $('#folder_form .btn').trigger('click');
+         $.get('/folders/new',{parent_id: 0, user_id: user_id},function(){});
       }
-   });
-    $('#new_pho').click(function(e){
-      e.preventDefault();
-     if(selected){
-      selected.find('.add .btn').trigger('click');
+   })
+    $('#new_photo').click(function(e){
+     if(selectedFolder){
+      $.get('/photos/new',{user_id: user_id,folder_id: selectedFolder},function(){
+      })
      }
    });
     $('#delete_tool').click(function(e){
-      e.preventDefault();
       if(selected){
-         selected.find('.delete .btn').trigger('click');
+         selected.find('.delete').trigger('click');
       }
     });
 

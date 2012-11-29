@@ -1,5 +1,5 @@
 <% if @photo.new_record? %>
   alert("Failed to upload photos");
 <% else %>
-   $(".fol").append("<%= j render folder %>");
+   $("#photo_table").append("<%= j render @photo %>");
 <% end %>

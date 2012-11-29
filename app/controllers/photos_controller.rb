@@ -1,7 +1,7 @@
 class PhotosController < ApplicationController
   
-  before_filter :require_existing_photo, :only => [:show, :edit, :update, :destroy]
-  before_filter :require_existing_target_folder, :only => [:new, :create]
+  #before_filter :require_existing_photo, :only => [:show, :edit, :update, :destroy]
+  #before_filter :require_existing_target_folder, :only => [:new, :create]
   
   def index
     @photos = Photo.all
@@ -10,24 +10,41 @@ class PhotosController < ApplicationController
   def new
     @photo = Photo.new(:folder_id=> params[:folder_id])
     respond_to do |format|
-      format.html {render 'sessions/profile'}
       format.js
+      if @@profile
+        format.html {render 'sessions/profile'}
+      end
+      if @@tour_bool
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+      end
     end
   end
   
   
   def show
     @photo = Photo.find(params[:id])
-    respond_to do |format|
+     respond_to do |format|
       format.js
-     end
+      if @@profile
+        format.html {render 'sessions/profile'}
+      end
+      if @@tour_bool
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+      end
+    end
   end
   
   def create
     @photo = Photo.create(params[:photo])
+    @photo.save!
     respond_to do |format|
       format.js
-      format.html {render 'sessions/profile'}
+      if @@profile
+        format.html {render 'sessions/profile'}
+      end
+      if @@tour_bool
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+      end
     end
   end
   
@@ -44,10 +61,16 @@ class PhotosController < ApplicationController
   end
 
   def destroy
-    @photo = Photo.find(params[:photo_id])
+    @photo = Photo.find(params[:id])
     @photo.destroy
-    redirect_to :controller=>:sessions, :action=>:profile,:user_id=>current_user.id
-    flash[:notice] = "Photo removed from library."
+    respond_to do |format|
+      if @@profile
+        format.html {render 'sessions/profile'}
+      end
+      if @@tour_bool
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+      end
+    end
   end
   
   def require_existing_photo

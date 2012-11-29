@@ -2,7 +2,7 @@ class LibraryController < ApplicationController
   
 
   def show
-   @user = current_user
+   @user = User.find(user_id)
    #@user = User.find(params[:user_id])
    #for f in @user.folders
    #  library.add(f)
@@ -10,7 +10,6 @@ class LibraryController < ApplicationController
    respond_to do |format|
      format.html 
    end
-    #@folders = library.folders.to_json
   end
 
   # @item is set in require_existing_item

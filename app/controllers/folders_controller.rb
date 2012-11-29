@@ -14,19 +14,31 @@ class FoldersController < ApplicationController
 
   # Note: @folder is set in require_existing_folder
   def show
-    @folder = Folder.find(params[:folder_id])
+    @folder = Folder.find(params[:id])
      respond_to do |format|
-      format.html
-     end
+       format.js
+      if @@profile
+        format.html {render 'sessions/profile'}
+      end
+      if @@tour_bool
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+      end
+    end
      #redirect_to :controller=>:library, :action=>:show
   end
 
   # Note: @target_folder is set in require_existing_target_folder
   def new
-    @folder = Folder.new(:parent_id=>params[:parent_id])
+    @folder = Folder.new(:parent_id=>params[:parent_id],:user_id=>params[:user_id])
     respond_to do |format|
-      format.html {render 'sessions/profile'}
       format.js
+      if @@profile
+        format.html {render 'sessions/profile'}
+      end
+      if @@tour_bool
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+      end
+      
     end
   end
   # Note: @target_folder is set in require_existing_target_folder
@@ -36,7 +48,12 @@ class FoldersController < ApplicationController
      @folder.save!
      respond_to do |format|
       format.js
-      format.html {render 'sessions/profile'}
+      if @@profile
+        format.html {render :template=>'sessions/profile', :locals=>{:user_id => @folder.user_id}}
+      end
+      if @@tour_bool
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+      end
      end
     #  
     #if @foldesr.save
@@ -81,10 +98,18 @@ class FoldersController < ApplicationController
 
   # Note: @folder is set in require_existing_folder
   def destroy
-    @folder = Folder.find(params[:folder_id])
+    @folder = Folder.find(params[:id])
     id = @folder.user_id
     @folder.destroy
-    redirect_to :controller=>:sessions,:action=>:profile,:user_id=>id
+    respond_to do |format|
+      format.js
+      if @@profile
+        format.html {render 'sessions/profile'}
+      end
+      if @@tour_bool
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+      end
+    end
   end
 
   

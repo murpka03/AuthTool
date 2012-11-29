@@ -51,24 +51,54 @@ ActiveRecord::Schema.define(:version => 20120919225024) do
   create_table "photos", :force => true do |t|
     t.integer  "folder_id"        
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "image"
   end
   create_table "sources", :force => true do |t|
     t.integer  "site_id"
+    t.integer  "tour_id"
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "image"
   end
   
   create_table "descriptions", :force => true do |t|
     t.integer  "source_id"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "tour_id"
+    t.text   "text"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
+  
+  create_table "hotspots", :force => true do |t|
+    t.integer  "tour_id"
+    t.float   "latitude"
+    t.float   "longitude"
+    t.text    "text"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+  
+  create_table "lines", :force => true do |t|
+    t.integer  "tour_id"
+    t.float     "slat"
+    t.float     "slng"
+    t.float     "elat"
+    t.float     "elng"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+  
+  create_table "vertices", :force => true do |t|
+    t.integer  "tour_id"
+    t.float    "latitude"
+    t.float     "longitude"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
 
 
 end

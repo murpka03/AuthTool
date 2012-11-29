@@ -1,8 +1,13 @@
 -tour = Tour.find(params[:tour_id])
 -user = User.find(current_user.id)
 :javascript
-  var msites = #{@sites}
+  var dbsites = #{@tsites}
   var tour_id = #{tour.id}
+  var dbsources = #{@sources}
+  var dbdescriptions = #{@descriptions}
+  var dbhotspots = #{@hotspots}
+  var dblines = #{@lines}
+  var dbvertexes = #{@vertices}
 %html
   %head
     %meta{:content => "initial-scale=1.0, user-scalable=no", :name => "viewport"}/
@@ -12,22 +17,29 @@
     %h1
       =tour.name
     %br
-      %p{:align => "right"}
+    #searchBar 
+      %p
         Find location:
         %input#searchTextField{:type => "text"}
-      #profile_button
-        =button_to 'Back to Profile',{:controller=>'sessions',:action=>'profile',:user_id=> current_user.id},{:class => 'btn btn-large btn-primary'}
-      #site_form
-        =button_tag "Save Sites", {:class => 'btn btn-large btn-primary'} 
+    #content
       #map_canvas
-      #preview
-      %textarea{:id=>'editor'}
       #library
         =render :template=>'library/show'
-      #sources
-        %h4
-          ="Site Sources:"
-      
-	
-      
-    
+      #editPane
+        %h1
+          ="Site:"
+          %input#siteName{:type => "text", :maxlength => "30"}
+        %br
+        %center
+          #siteLatLng
+        %br
+        #preview
+        =button_tag 'save',{:class=>'btn btn-info',:id=>'save_text'}
+        #sources
+          %h4 Sources:
+    #buttons
+      #profile_button
+        =button_to 'Back to Profile',{:controller=>'sessions',:action=>'profile',:user_id=> current_user.id},{:class => 'btn btn-large btn-primary'}
+      #save_tour
+        =button_tag "Save Sites", {:class => 'btn btn-large btn-primary'} 
+

@@ -1,4 +1,4 @@
--user = User.find(current_user.id)
+-user = current_user
 =form_for user.tours.new do |f|
   =f.text_field :name ,{:placeholder=>'enter tour new'}
   =f.hidden_field :user_id

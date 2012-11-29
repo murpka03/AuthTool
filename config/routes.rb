@@ -9,9 +9,10 @@ Photos::Application.routes.draw do
   resources :sites
   resources :sources
   resources :tours
-  match "sites/:latitude", :to => "sites#show", :via=> :get
-  match "profile/:user_id/photos", :to => "photos#index"
-  match "profile/:user_id/new", :to => "photos#new"
+  resources :descriptions
+  resources :hotspots
+  resources :lines
+  resources :vertices
   match "signup", :to => "users#new"
   match "login", :to => "sessions#login"
   match "logout", :to => "sessions#logout"
@@ -24,7 +25,6 @@ Photos::Application.routes.draw do
   match "profile/:user_id/sites", :to => "sites#index"
   match "profile/:user_id/tours/:tour_id", :to => "tours#show"
   match "tours/:tour_id/user_id", :to => "tours#show"
-  match "profile/:user_id/folder/:folder_id", :to => "folder#show"
   match ':controller(/:action(/:id))(.:format)'
 
 end

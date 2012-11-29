@@ -4,6 +4,8 @@ theme_advanced_statusbar_location: bottom
 theme_advanced_buttons3_add:
   - tablecontrols
   - fullscreen
+  - save
 plugins:
   - table
   - fullscreen
+  - save
