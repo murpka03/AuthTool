@@ -1,7 +1,12 @@
 class SitesController < ApplicationController
 
   def index
-    
+    @tour = Tour.find(params[:tour_id])
+    @sites = @tour.sites
+    @sites = @sites.to_json
+    respond_to do |format|
+      format.js
+    end
   end
    # GET /sites/1
   # GET /sites/1.json
@@ -21,21 +26,32 @@ class SitesController < ApplicationController
   #explicitly designate tourid in create
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json:@site }
     end
   end
 
   
   def edit
     @site = Site.find(params[:id])
+    @site.latitude = params[:latitude]
+    @site.longitude = params[:longitude]
+    @site.tour_id = params[:tour_id]
+    @site.save!
+    respond_to do |format|
+      format.js
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@site.tour_id}
+    end
   end
 
   # POST /characters
   # POST /characters.json
   def create
-    @site = Site.create(:longitude=>params[:longitude],:latitude=>params[:latitude],:tour_id=>params[:tour_id])
+    @site = Site.new(:longitude=>params[:longitude],:latitude=>params[:latitude],:tour_id=>params[:tour_id])
     @site.tour_id = params[:tour_id]
     @site.save!
+    respond_to do |format|
+      format.js
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@site.tour_id}
+    end
   end
   
   #action to add source materials to a site
@@ -44,15 +60,8 @@ class SitesController < ApplicationController
   # PUT /characters/1.json
   def update
     @site = Site.find(params[:id])
-
     respond_to do |format|
-      if @character.update_attributes(params[:site])
-        format.html { redirect_to @site, notice: 'Character was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @site.errors, status: :unprocessable_entity }
-      end
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@site.tour_id}
     end
   end
   

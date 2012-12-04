@@ -1,0 +1,6 @@
+-place_holder = "Describe this site" if params[:site_id] 
+-place_holder = "Describe this tour" if params[:tour_id] 
+-place_holder = "Describe this source" if params[:source_id] 
+=text_area_tag :editor, place_holder, :class => "tinymce", :rows => 20, :cols => 8
+=tinymce
+=button_tag "save", :class=>'btn btn-info', :id=>'save_text'

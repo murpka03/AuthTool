@@ -1,13 +1,10 @@
+=javascript_include_tag 'utils/facebox.js'
 -tour = Tour.find(params[:tour_id])
 -user = User.find(current_user.id)
 :javascript
-  var dbsites = #{@tsites}
+  var msites = #{@tsites}
   var tour_id = #{tour.id}
-  var dbsources = #{@sources}
-  var dbdescriptions = #{@descriptions}
-  var dbhotspots = #{@hotspots}
   var dblines = #{@lines}
-  var dbvertexes = #{@vertices}
 %html
   %head
     %meta{:content => "initial-scale=1.0, user-scalable=no", :name => "viewport"}/
@@ -16,25 +13,24 @@
   %body
     %h1
       =tour.name
-    %br
-    #searchBar 
-      %p
-        Find location:
-        %input#searchTextField{:type => "text"}
+    =link_to image_tag('order.png'),{:controller=>:descriptions,:action=>:show,:tour_id=>tour.id},{:id=>'tour_description',:remote=>true}
+    %input#searchTextField{:type => "text",:placeholder=>'find location'}
     #content
       #map_canvas
+      #sites
+        -@tour.sites.each do |site|
+          .mark{:data=>{:lat=>site.latitude,:lng=>site.longitude,:mid=> site.id}}
+      #lines
+        -@tour.lines.each do |line|
+          = render line
       #library
         =render :template=>'library/show'
       #editPane
-        %h1
-          ="Site:"
-          %input#siteName{:type => "text", :maxlength => "30"}
-        %br
-        %center
-          #siteLatLng
+        %input#siteName{:type => "text", :maxlength => "30",:placeholder=>'site name'}
+        %input#siteLat{:type => "text", :maxlength => "20",:placeholder=>'site latitude'}
+        %input#siteLng{:type => "text", :maxlength => "20",:placeholder=>'site longitude'}
         %br
         #preview
-        =button_tag 'save',{:class=>'btn btn-info',:id=>'save_text'}
         #sources
           %h4 Sources:
     #buttons

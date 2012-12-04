@@ -22,39 +22,27 @@ class ToursController < ApplicationController
   def show
     @@profile = false
     @@tour_bool = true
-    if !@@current_tour.nil?
-      @tour = current_user.tours.find(@@current_tour)
-    else
-      @tour = current_user.tours.find(params[:tour_id])
-      @@current_tour = @tour.id
-    end
-    @sources = []
-    @descriptions = []
+    @tour = Tour.find(params[:tour_id])
+    @@current_tour = @tour.id
     @lines = []
     @hotspots = []
     @vertices = []
     @tsites = []
     @tour.sites.each do |site|
       @tsites << site
-      site.sources.each do |source|
-        @sources << source
-        @descriptions << source.description
-      end
     end
-     @tour.vertices.each do |vertex|
+    @tour.vertices.each do |vertex|
       @vertices << vertex
     end
     @tour.hotspots.each do |hotspot|
       @hotspots << hotspot
     end
-    #if !@tour.lines.empty?
-    #  @tour.lines.each do |line|
-    #    @lines << line.to_json
-    #  end
-    #end
-    @tsites = @tsites.to_json
-    @sources = @sources.to_json
-    @descriptions = @descriptions.to_json
+    if !@tour.lines.empty?
+      @tour.lines.each do |line|
+        @lines << line
+      end
+    end
+    @tsites = @tour.sites.to_json
     @lines = @lines.to_json
     @vertices = @vertices.to_json
     @hotspots = @hotspots.to_json

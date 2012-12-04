@@ -2,17 +2,43 @@
     text-align: center;
 }
 #content{ width:100%;}
+#tour_description{
+    
+}
 #siteName{
+    float:left;
     border: 1px solid black;
+}
+#siteLat{
+    float:right;
+    border: 1px solid black;
+    top:0px;
+}
+#siteLng{
+    float:right;
+    border: 1px solid black;
+    top: 10px;
 }
 #buttons{}
 #profile_button{ }
 #save_tour{}
+#searchTextField{
+    top:0px;
+}
 #map_canvas {
     height: 400px;
     width: 600px;
     float: left;
-    margin-left: 50px;
+    margin-left: 20px;
+    margin-bottom: 5px;
+}
+#sites{
+    display:none;
+    padding: none;
+}
+#lines{
+    display:none;
+    padding: none;
 }
 #library{
     
@@ -29,9 +55,7 @@
    height: 200px;
    width: 600px;
 }
-#searchBar{
-    margin-left: 100px;
-}
+
 
 
 #editPane{
@@ -46,7 +70,9 @@
     background-color:#EEE;
     border: 5px outset black;
 }
-
+.site_description{
+    
+}
 #preview{
     display:inline-block;
     width: 400px;
@@ -73,37 +99,38 @@
 }
 .source{
     border: 1px solid black;
-    height: 150px;
-    width: 150px;
+    height: 100px;
+    width: 165px;
     position: relative;
 }
-.source .remove{
-    display: none;
-    cursor: pointer;
+.source .source_image{
+    width: 150px;
+    height:100px;
 }
 .source:hover > *{
     opacity: .4;
 }
-.source:hover .remove{
-    content: "";
+.source .delete{
+    display: none;
+    cursor: pointer;
+}
+
+.source:hover .delete{
     display: block;
-    background-image:url('/assets/remove_icon.png');
     background-repeat: no-repeat;
     position: absolute;
-    right: 0px;
-    top: 0px;
+    top: 0;
+    right: 15px;
     width: 30px;
     height: 30px;
     opacity: 1.0;
 }
-.source .edit{
+.source .edit_icon{
     display: none;
     cursor: pointer;
 }
-.source:hover .edit{
-    content: "";
+.source:hover .edit_icon{
     display: block;
-    background-image:url('file.png');
     background-repeat: no-repeat;
     position: absolute;
     top: 0;

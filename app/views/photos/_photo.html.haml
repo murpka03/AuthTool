@@ -1,5 +1,4 @@
-=stylesheet_link_tag 'photos.css.scss'
-.photo
-  =image_tag(photo.image.url)
-  .delete
-    =link_to image_tag('remove_icon.png'),photo,:method => :delete, :confirm => "Are you sure?"
+-name = photo.image.url
+.photo{:data=>{:title => name}}
+  =image_tag(photo.image.url,:class=>'photo_image')
+  =link_to image_tag('remove_icon.png'),photo,:method => :delete, :confirm => "Are you sure?",:class=>'delete'

@@ -1,0 +1,7 @@
+$("#content_display").html("");
+$('#folder_table').html('');
+<%-current_user.folders.reverse.each do |folder| %>
+  <%-if folder.id? && folder.parent_id.nil?%>
+    $("#folder_table").append('<%= j render :partial=>'folders/label', :locals => {:folder_id => folder.id,:user_id=>current_user.id} %>');
+  <% end %>
+<% end %>

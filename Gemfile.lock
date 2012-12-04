@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/wafcio/jquerytools-rails.git
+  revision: b48b088accac6ccc21e731cb141f0779b255d4f6
+  specs:
+    jquerytools-rails (1.2.7)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -126,6 +132,7 @@ DEPENDENCIES
   haml
   jquery-fileupload-rails
   jquery-rails
+  jquerytools-rails!
   rack-raw-upload
   rails (= 3.2.8)
   rmagick

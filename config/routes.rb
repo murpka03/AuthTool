@@ -21,10 +21,8 @@ Photos::Application.routes.draw do
   match "setting", :to => "sessions#setting"
   match "edit", :to => "users#edit"
   match '/sites/photos', :to=> "photos#add_to_site", :via=> :post
-  match "profile/:user_id/library", :to => "library#show"
+  match "library/:user_id", :to => "library#show", :via=>:get
   match "profile/:user_id/sites", :to => "sites#index"
-  match "profile/:user_id/tours/:tour_id", :to => "tours#show"
-  match "tours/:tour_id/user_id", :to => "tours#show"
   match ':controller(/:action(/:id))(.:format)'
 
 end

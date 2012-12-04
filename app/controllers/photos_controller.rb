@@ -54,9 +54,13 @@ class PhotosController < ApplicationController
 
   def update
     @photo = Photo.find(params[:id])
-    if params[:site_id]
-      @photo.site_id = params[:site_id]
-      @photo.save!
+    respond_to do |format|
+      if @@profile
+        format.html {render 'sessions/profile'}
+      end
+      if @@tour_bool
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+      end
     end
   end
 

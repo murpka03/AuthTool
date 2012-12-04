@@ -1,0 +1,10 @@
+var id = <%= @site.id %>
+var lat = <%= @site.latitude %>
+var lng = <%= @site.longitude %>
+$("#sites").children('.mark').each(function(){
+  if($(this).data('mid')==id){
+    $(this).data('lat',lat);
+    $(this).data('lng',lng); 
+  }
+});
+

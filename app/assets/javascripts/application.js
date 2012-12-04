@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
+//= require jquerytools
 //= require jquery-fileupload/basic
 //= require jquery-fileupload/vendor/tmpl
 //= require gmaps4rails/gmaps4rails.base

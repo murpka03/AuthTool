@@ -19,23 +19,5 @@ class Folder < ActiveRecord::Base
     end
     false
   end
-
-  def is_root?
-    parent.nil? && !new_record?
-  end
-
-  def has_children?
-    children.count > 0
-  end
-
-  def self.root
-    @root_folder 
-  end
-  
-  private
-
-  def check_for_parent
-    raise 'Folders must have a parent.' if parent.nil? && name != 'Root folder'
-  end
   
 end

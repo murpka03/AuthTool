@@ -1,11 +1,9 @@
 =javascript_include_tag 'toggle.js'
 =javascript_include_tag 'utils/facebox.js'
-=stylesheet_link_tag 'profile.css.scss'
-- user = current_user
-- user_id = user.id
+-user = current_user
 :javascript
-  var folders = #{@folders};
-  var user_id = #{user_id};
+  var user_id = #{user.id};
+  var tour_id = '0';
 %h1
   .User_Header
     -if user.is_admin == false
@@ -51,4 +49,4 @@
               =tour.name
           %td
             .right-element
-              =button_to "view tour", {:controller=>:tours,:action=>:show,:tour_id=>tour.id},{:class=>'btn btn-info'}
+              =button_to "view tour", {:controller=>:tours,:action=>:show,:user_id=>user.id,:tour_id=>tour.id},{:class=>'btn btn-info'}

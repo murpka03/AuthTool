@@ -26,6 +26,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'jquerytools-rails', :git=> 'git://github.com/wafcio/jquerytools-rails.git'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20120919225024) do
   create_table "descriptions", :force => true do |t|
     t.integer  "source_id"
     t.integer  "tour_id"
+    t.integer "site_id"
     t.text   "text"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false

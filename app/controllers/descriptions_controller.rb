@@ -8,35 +8,60 @@ class DescriptionsController < ApplicationController
   end
   
   def new
-    @description = Description.new(:text=>params[:text])
+    if params[:source_id]
+       @description = Description.new(:text=>params[:text],:source_id=>params[:source_id])
+    end
+    if params[:site_id]
+       @description = Description.new(:text=>params[:text],:site_id=>params[:site_id])
+    end
+    if params[:tour_id]
+       @description = Description.new(:text=>params[:text],:tour_id=>params[:tour_id])
+    end
     respond_to do |format|
-      format.js 
+      format.js
       format.html
     end
   end
   
   def show
-    @description = Description.find(params[:id])
-    @description = @description.to_json
-    respond_to do |format|
-      format.html
+    @description = nil
+    if params[:source_id]
+      @source = Source.find(params[:source_id])
+      @description = @source.description
+    end
+    if params[:site_id]
+      @site = Site.find(params[:site_id])
+      @description = @site.description
+    end
+    if params[:tour_id]
+      @tour = Tour.find(params[:tour_id])
+      @description = @tour.description
+    end
+    if @description.nil?
+      render 'new'
+    end
+    if !@description.nil?
+      respond_to do |format|
+        format.js
+      end
     end
   end
   
   
   def create
-    @description = Description.new(:text=>params[:text])
-    if !params[:source_id].nil?
-      @description.source_id = params[:source_id]
+    if params[:source_id]
+       @description = Description.new(:text=>params[:text],:source_id=>params[:source_id])
     end
-    if !params[:tour_id].nil?
-       @description.tour_id = params[:tour_id]
+    if params[:site_id]
+       @description = Description.new(:text=>params[:text],:site_id=>params[:site_id])
+    end
+    if params[:tour_id]
+       @description = Description.new(:text=>params[:text],:tour_id=>params[:tour_id])
     end
     @description.save!
     respond_to do |format|
       format.html {render 'sessions/profile'}
     end
-  end
   end
   
   def edit

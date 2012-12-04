@@ -1,0 +1,13 @@
+var slat = <%= @line.slat %>
+var slng = <%= @line.slng %>
+var elat = <%= @line.elat %>
+var elng = <%= @line.elng %>
+$("#lines").find('.line').each(function(){
+  if($(this).data('lid')==id){
+    $(this).data('slat',slat);
+    $(this).data('slng',slng);
+    $(this).data('elat',elat);
+    $(this).data('elng',elng); 
+  }
+});
+

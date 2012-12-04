@@ -36,16 +36,16 @@ class SessionsController < ApplicationController
   end
 
   def profile
-    @@tour_bool = false
     @@profile = true
+    @@tour_bool = false
     if session[:user_id].nil?
       redirect_to :action=> 'login'
     else
-      @user = User.find(session[:user_id]) || User.find(user_id)
-      @folders = @user.folders.to_json
+      @user = User.find(session[:user_id]) || User.find(params[:user_id])
       @admin = @user.is_admin
       @users = User.all
     end
+    @user
   end
 
   def setting

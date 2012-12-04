@@ -23,18 +23,29 @@ class LinesController < ApplicationController
   
   def edit
     @line = Line.find(params[:id])
+    @line.slat = params[:slat] if params[:slat]
+    @line.slng = params[:slng] if params[:slng]
+    @line.elat = params[:elat] if params[:elat]
+    @line.elng = params[:elng] if params[:elng]
+    @line.tour_id = params[:tour_id]
+    @line.save!
+    respond_to do |format|
+      format.js
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@line.tour_id}
+    end
   end
 
   # POST /characters
   # POST /characters.json
   def create
-    @line = Line.create(:tour_id=>params[:tour_id])
+    @line = Line.new(:tour_id=>params[:tour_id])
     @line.slat = params[:slat]
     @line.slng = params[:slng]
     @line.elat = params[:elat]
     @line.elng = params[:elng]
     @line.save!
     respond_to do |format|
+      format.js
       format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@line.tour_id}
     end
   end
@@ -44,7 +55,10 @@ class LinesController < ApplicationController
   # PUT /characters/1
   # PUT /characters/1.json
   def update
-  
+    @line = Line.find(params[:id])
+     respond_to do |format|
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@line.tour_id}
+    end
   end
 
   # DELETE /characters/1

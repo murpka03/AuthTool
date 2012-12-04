@@ -1,3 +1,5 @@
+$('#editPane').find('.site_description').remove();
+$('#editPane').append('<%= link_to image_tag('order.png'),{:controller=>:descriptions,:action=>:show,:site_id=>@site.id},{:class=>'site_description',:remote=>true} %>');
 <%-@site.sources.each do |source| %>
   $("#sources").append('<%= j render source %>');
 <% end %>

@@ -1,2 +1,7 @@
-$("#photo_table").append("<%= j render @folder %>");
-
+$("#content_display").html("<%= j render @folder %>");
+<%-if !@folder.childs.empty? %>
+  $('#folder_table').html("");
+  <%-@folder.childs.each do |child| %>
+    $("#folder_table").append('<%= j render :partial=>'folders/label', :locals => {:folder_id => child.id} %>');
+  <% end %>
+<% end %>

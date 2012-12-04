@@ -21,10 +21,10 @@ class SourcesController < ApplicationController
     if !params[:tour_id].nil?
        @source.tour_id = params[:tour_id]
     end
-    @source.save!
     respond_to do |format|
+      format.js
       format.html
-      end
+    end
   end
   
   def create

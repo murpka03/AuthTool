@@ -1,19 +1,18 @@
--user = current_user
--user_id = user.id
 :javascript
-  var user_id = #{user_id}
-
-%h2
-  ="File Library:"
-=button_to '+',{:controller=>:folders,:action=>:new,:user_id=>user.id,:parent_id=>nil},{:remote=>true, :id=>'folder_form'}
-#library_buttons
-  = button_tag image_tag('folder.png'),{:id=>'new_folder'}
-  = button_tag image_tag('dcam.png'),{:id=>'new_photo'}
-  = button_tag 'X', {:id=>'delete_tool',:class=>'btn-danger'}
-#file_explorer
-  -if !user.folders.empty?
-    #folder_table
-      -user.folders.reverse.each do |folder|
-        -if folder.id? && !folder.parent_id?
-          = render :partial=>'folders/label', :locals => {:folder_id => folder.id}
-    #photo_table
+  var user_id = #{current_user.id}
+%html
+  %head
+%body
+  #library_buttons_panel
+    = button_tag image_tag('folder.png'),{:id=>'new_folder'}
+    = button_tag image_tag('photography.png'),{:id=>'new_photo'}
+  #directory_trail
+    .folder_trail{:data=> {:fid=> 'home'}}
+      = image_tag('home.png',:width=>'30px',:height=>'20px')
+  #file_explorer
+    -if !current_user.folders.empty?
+      #folder_table
+        -current_user.folders.reverse.each do |folder|
+          -if folder.id? && folder.parent_id.nil?
+            = render :partial=>'folders/label', :locals => {:folder_id => folder.id ,:user_id=>current_user.id}
+      #content_display

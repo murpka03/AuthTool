@@ -1,17 +1,10 @@
 =stylesheet_link_tag 'folders.css.scss'
 -user = User.find(current_user.id)
--if !folder.photos.empty?
-  -folder.photos.each do |photo|
+-if !@folder.photos.empty?
+  -@folder.photos.each do |photo|
     =render photo
--if !folder.childs.empty?
-  -folder.childs.each do |child|
-    -id = child.id
-    .folder{:data=> {:fid=> id}}
-      = image_tag('folder.png')
-      %h5
-        =child.name
-      .delete
-        =link_to image_tag('remove_icon.png'),child, :method=>:delete,:confirm=>"are you sure?"
+-else
+  = "Empty Folder"
 
 
 

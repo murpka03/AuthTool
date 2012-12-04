@@ -1,12 +1,7 @@
 class LibraryController < ApplicationController
   
-
   def show
-   @user = User.find(user_id)
-   #@user = User.find(params[:user_id])
-   #for f in @user.folders
-   #  library.add(f)
-   #end
+   @user = User.find(params[:user_id])
    respond_to do |format|
      format.html 
    end
