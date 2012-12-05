@@ -1,0 +1,6 @@
+var id = <%= @site.id %>
+$("#sites").children('.mark').each(function(){
+  if($(this).data('mid')==id){
+    $(this).remove();
+  }
+});

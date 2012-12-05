@@ -1,0 +1,5 @@
+<% if @vertex.new_record? %>
+  alert("Failed to create site");
+<% else %>
+  $("#vertices").append("<%= j render @vertex %>");
+<% end %>

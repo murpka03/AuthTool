@@ -1,9 +1,10 @@
-var slat = <%= @line.slat %>
-var slng = <%= @line.slng %>
-var elat = <%= @line.elat %>
-var elng = <%= @line.elng %>
+var slat = <%= params[:slat] %>
+var slng = <%= params[:slng] %>
+var elat = <%= params[:elat] %>
+var elng = <%= params[:elng] %>
+var id = <%= @line.id %>
 $("#lines").find('.line').each(function(){
-  if($(this).data('lid')==id){
+  if($(this).data('lid') == id){
     $(this).data('slat',slat);
     $(this).data('slng',slng);
     $(this).data('elat',elat);

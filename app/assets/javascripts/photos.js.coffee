@@ -6,7 +6,7 @@ jQuery ->
     dropzone :  $('#content_display')
     dataType: "script"
     add: (e, data) ->
-      types = /(\.|\/)(gif|jpe?g|png)$/i
+      types = /(\.|\/)(gif|jpe?g|png|avi|mov)$/i
       file = data.files[0]
       if types.test(file.type) || types.test(file.name)
         data.context = file.name

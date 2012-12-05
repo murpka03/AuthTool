@@ -1,41 +1,42 @@
-class VertexesController < ApplicationController
+class VerticesController < ApplicationController
   
   def index
-    @vertexes = Vertex.all
+    @vertices = Vertex.all
   end
   
   def show
     @vertex = Vertex.find(params[:id])
-    respond_to do |format|
-      format.js
-      format.html
-    end
-  
   end
 
   # GET /vertexs/new
   # GET /vertexs/new.json
   def new
-    @vertex = Vertex.new(:tour_id=>params[:tour_id])
-  #explicitly designate tourid in create
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json:@vertex }
-    end
+   @vertex = Vertex.new(:tour_id=>params[:tour_id])
   end
 
   
   def edit
     @vertex = Vertex.find(params[:id])
+    @vertex.latitude = params[:latitude]
+    @vertex.longitude = params[:longitude]
+    @vertex.save!
+    respond_to do |format|
+      format.js
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@line.tour_id}
+    end
   end
 
   # POST /characters
   # POST /characters.json
   def create
-    @vertex = Vertex.create(:tour_id=>params[:tour_id])
+    @vertex = Vertex.new(:tour_id=>params[:tour_id])
     @vertex.latitude = params[:latitude]
     @vertex.longitude = params[:longitude]
     @vertex.save!
+    respond_to do |format|
+      format.js
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@vertex.tour_id}
+    end
   end
   
   #action to add source materials to a vertex
@@ -43,7 +44,13 @@ class VertexesController < ApplicationController
   # PUT /characters/1
   # PUT /characters/1.json
   def update
-  
+    @vertex = Vertex.find(params[:id])
+    @vertex.latitude = params[:latitude]
+    @vertex.longitude = params[:longitude]
+    @vertex.save!
+     respond_to do |format|
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@vertex.tour_id}
+    end
   end
 
   # DELETE /characters/1
@@ -53,8 +60,8 @@ class VertexesController < ApplicationController
     @vertex.destroy
 
     respond_to do |format|
-      format.html { redirect_to 'sessions/profile' }
-      format.json { head :no_content }
+      format.js
+      format.html{redirect_to :controller=>:tours,:action=>:show,:tour_id=>@vertex.tour_id}
     end
   end
 

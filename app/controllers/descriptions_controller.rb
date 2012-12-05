@@ -19,7 +19,7 @@ class DescriptionsController < ApplicationController
     end
     respond_to do |format|
       format.js
-      format.html
+      format.html {render }
     end
   end
   
@@ -66,13 +66,19 @@ class DescriptionsController < ApplicationController
   
   def edit
     @description = Description.find(params[:id])
+    @description.text = params[:text]
+    @description.save!
+    respond_to do |format|
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@@current_tour}
+    end
   end
 
   def update
     @description = Description.find(params[:id])
-    if params[:site_id]
-      @description.source_id = params[:source_id]
-      @description.save!
+    @description.text = params[:text]
+    @description.save!
+    respond_to do |format|
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@@current_tour}
     end
   end
 

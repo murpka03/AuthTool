@@ -9,12 +9,12 @@ class FoldersController < ApplicationController
 
   # Note: @folder is set in require_existing_folder
   def show
-    @user = current_user
+    @user = User.find(session[:user_id])
     @folder = Folder.find(params[:id])
      respond_to do |format|
        format.js
       if @@profile
-        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>current_user}
+        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>@user.id}
       end
       if @@tour_bool
         format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
@@ -25,11 +25,12 @@ class FoldersController < ApplicationController
 
   # Note: @target_folder is set in require_existing_target_folder
   def new
-    @folder = Folder.new(:name=>params[:name],:parent_id=>params[:parent_id],:user_id=>params[:user_id])
+    @user = User.find(session[:user_id])
+    @folder = Folder.new(:name=>params[:name],:parent_id=>params[:parent_id],:user_id=>@user.id)
     respond_to do |format|
       format.js
       if @@profile
-        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>current_user}
+        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>@user.id}
       end
       if @@tour_bool
         format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
@@ -39,13 +40,14 @@ class FoldersController < ApplicationController
   end
   # Note: @target_folder is set in require_existing_target_folder
   def create
+     @user = User.find(session[:user_id])
      @folder = Folder.new(params[:folder])
-     @folder.user_id = current_user
+     @folder.user_id = @user.id
      @folder.save!
      respond_to do |format|
       format.js
       if @@profile
-        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>current_user}
+        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>@user.id}
       end
       if @@tour_bool
         format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
@@ -87,7 +89,7 @@ class FoldersController < ApplicationController
   def update
     respond_to do |format|
       if @@profile
-        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>current_user}
+        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>session[:user_id]}
       end
       if @@tour_bool
         format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
@@ -97,16 +99,17 @@ class FoldersController < ApplicationController
 
   # Note: @folder is set in require_existing_folder
   def destroy
+    @user = User.find(session[:user_id])
     @folder = Folder.find(params[:id])
     id = @folder.user_id
     @folder.destroy
     respond_to do |format|
       format.js
       if @@profile
-        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>current_user}
+        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>@user.id}
       end
       if @@tour_bool
-        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour, :user_id =>@user.id}
       end
     end
   end

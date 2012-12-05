@@ -3,7 +3,8 @@
 }
 #content{ width:100%;}
 #tour_description{
-    
+    top:0px;
+    right:300px;
 }
 #siteName{
     float:left;
@@ -40,10 +41,14 @@
     display:none;
     padding: none;
 }
+#vertices{
+    display:none;
+    padding:none;
+}
 #library{
     
 }
-#library_buttons{
+#library_buttons_panel{
     position:fixed;
     bottom:215px;
     left: 10px;

@@ -2,6 +2,7 @@ require File.expand_path('../boot', __FILE__)
 
 # Pick the frameworks you want:
 require 'rails/all'
+
 # require "rails/test_unit/railtie"
 
 if defined?(Bundler)

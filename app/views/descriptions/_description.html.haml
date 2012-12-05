@@ -1,3 +1,7 @@
-=text_area_tag :editor, @description.text, :class => "tinymce", :rows => 20, :cols => 8
+-place_holder = "Describe this site" if params[:site_id] 
+-place_holder = "Describe this tour" if params[:tour_id] 
+-place_holder = "Describe this source" if params[:source_id]
+-place_holder = description.text if !description.text.nil?
+=text_area_tag :editor, place_holder, :class => "tinymce", :rows => 20, :cols => 8,:data=> {:did=> description.id}
 =tinymce
 =button_tag "save", :class=>'btn btn-info', :id=>'save_text'

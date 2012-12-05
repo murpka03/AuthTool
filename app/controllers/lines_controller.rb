@@ -23,11 +23,10 @@ class LinesController < ApplicationController
   
   def edit
     @line = Line.find(params[:id])
-    @line.slat = params[:slat] if params[:slat]
-    @line.slng = params[:slng] if params[:slng]
-    @line.elat = params[:elat] if params[:elat]
-    @line.elng = params[:elng] if params[:elng]
-    @line.tour_id = params[:tour_id]
+    @line.slat = params[:slat] 
+    @line.slng = params[:slng]
+    @line.elat = params[:elat] 
+    @line.elng = params[:elng] 
     @line.save!
     respond_to do |format|
       format.js
@@ -56,6 +55,11 @@ class LinesController < ApplicationController
   # PUT /characters/1.json
   def update
     @line = Line.find(params[:id])
+    @line.slat = params[:slat] 
+    @line.slng = params[:slng]
+    @line.elat = params[:elat] 
+    @line.elng = params[:elng] 
+    @line.save!
      respond_to do |format|
       format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@line.tour_id}
     end
@@ -66,10 +70,9 @@ class LinesController < ApplicationController
   def destroy
     @line = Line.find(params[:id])
     @line.destroy
-
     respond_to do |format|
-      format.html { redirect_to 'sessions/profile' }
-      format.json { head :no_content }
+      format.js
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@line.tour_id}
     end
   end
 

@@ -1,0 +1,6 @@
+var id = <%= @vertex.id %>
+$("#vertices").children('.vertex').each(function(){
+  if($(this).data('vid')==id){
+    $(this).remove();
+  }
+});

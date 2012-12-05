@@ -1,0 +1,6 @@
+var id = <%= @line.id %>
+$("#lines").children('.line').each(function(){
+  if($(this).data('lid')==id){
+    $(this).remove();
+  }
+});

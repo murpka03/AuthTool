@@ -3,6 +3,7 @@
 -user = User.find(current_user.id)
 :javascript
   var msites = #{@tsites}
+  var dbvertices = #{@vertices}
   var tour_id = #{tour.id}
   var dblines = #{@lines}
 %html
@@ -13,7 +14,7 @@
   %body
     %h1
       =tour.name
-    =link_to image_tag('order.png'),{:controller=>:descriptions,:action=>:show,:tour_id=>tour.id},{:id=>'tour_description',:remote=>true}
+    = link_to image_tag('order.png'),{:controller=>:descriptions,:action=>:show,:tour_id=>tour.id},{:id=>'tour_description',:remote=>true} 
     %input#searchTextField{:type => "text",:placeholder=>'find location'}
     #content
       #map_canvas
@@ -23,6 +24,9 @@
       #lines
         -@tour.lines.each do |line|
           = render line
+      #vertices
+        -@tour.vertices.each do |vertex|
+          = render vertex
       #library
         =render :template=>'library/show'
       #editPane

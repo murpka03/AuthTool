@@ -27,7 +27,7 @@ end
 
 gem 'jquery-rails'
 gem 'jquerytools-rails', :git=> 'git://github.com/wafcio/jquerytools-rails.git'
-
+gem 'carrierwave'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -43,6 +43,5 @@ gem 'jquerytools-rails', :git=> 'git://github.com/wafcio/jquerytools-rails.git'
 # To use debugger
 # gem 'debugger'
 gem 'rack-raw-upload'
-gem 'carrierwave'
 gem 'rmagick'
 gem 'haml' # YAML-style templates

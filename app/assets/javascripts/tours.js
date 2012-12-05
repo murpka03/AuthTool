@@ -2,6 +2,8 @@ $(function(){
 var map;
 var lines = [];
 var points = [];
+var markers = [];
+var vertices = [];
 var circle;
 var lineSymbol;
 var overlay;
@@ -26,7 +28,8 @@ var drawn;
 var tour_editor;
 var source_editor;
 var site_editor;
-var markers = [];
+var vertices_div;
+
 function initialize() {
 
   site_id = 0;
@@ -42,9 +45,6 @@ function initialize() {
     mapTypeId: google.maps.MapTypeId.HYBRID
   };
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-  overlay = new google.maps.OverlayView();
-  overlay.draw = function(){};
-  overlay.setMap(map);
   
   lineSymbol = {
     path: 'M 0,0 0,0',
@@ -54,18 +54,7 @@ function initialize() {
     scale: 4
   };
   //load saved sites to map from the db
-  for(var i = 0; i< msites.length; i++){
-    var pos = new google.maps.LatLng(msites[i]['latitude'],msites[i]['longitude']);
-    var m = createMarker(pos);
-    m.setMap(map);
-    
-  }
-  //load saved lines from the db
-  for(var i = 0; i < dblines.length; i++){
-    var start = new google.maps.LatLng(dblines[i]['slat'],dblines[i]['slng']);
-    var end = new google.maps.LatLng(dblines[i]['elat'],dblines[i]['elng']);
-    var l = drawLine(start,end,map);
-  }
+
 
   wheel = new google.maps.Marker({
           icon: {
@@ -92,10 +81,14 @@ function initialize() {
   google.maps.event.addListener(circle, 'mousedown', function(event) {
     dragStart = true;
     circle.setMap(null);
-
     var pointone = hoverLine.getPath().getAt(0);
     var pointtwo = hoverLine.getPath().getAt(1);
-    hovertemp = hoverLine;
+    for(var i = 0; i< lines.length; i++){
+        if(lines[i] == hoverLine){
+            hoverPos = i;
+            break;
+        }
+    }
     
     lineone = drawLine(pointone, event.latLng,map);
     linetwo = drawLine(event.latLng, pointtwo,map);
@@ -123,9 +116,22 @@ function initialize() {
             var linecopy2 = drawLine(linetwo.getPath().getAt(0), linetwo.getPath().getAt(1),map);
             lineone.setMap(null);
             linetwo.setMap(null);
+            //get the current line  
+            //remove dragging line from database
+            var remove_id = findLine(hoverLine);
+            $.post('/lines'+remove_id,{_method:'delete'},function(){})
+            //add lineone to db
+            var slat1 = linecopy1.getPath().getAt(0).lat();var slng1 = linecopy1.getPath().getAt(0).lng();
+            var elat1 = linecopy1.getPath().getAt(1).lng();var elng1 = linecopy1.getPath().getAt(1).lng();
+            $.post('/lines',{slat:slat1,slng:slng1,elat:elat1,elng:elng1,tour_id:tour_id},function(){})
+            
+            //add linetwo to db
+            var slat2 = linecopy2.getPath().getAt(0).lat();var slng2 = linecopy2.getPath().getAt(0).lng();
+            var elat2 = linecopy2.getPath().getAt(1).lng();var elng2 = linecopy1.getPath().getAt(1).lng();
+            $.post('/lines',{slat:slat2,slng:slng2,elat:elat2,elng:elng2,tour_id:tour_id},function(){})
             lines[hoverPos].setMap(null);
             lines.splice(hoverPos,1,linecopy1,linecopy2);
-            createVertex(linecopy1.getPath().getAt(1));
+            //createVertex(linecopy1.getPath().getAt(1));
           }
           circle.setMap(map);
           dragStart = false;
@@ -135,54 +141,49 @@ function initialize() {
   //marker added to db here
    google.maps.event.addListener(map, 'click', function(event) {
         var marker = createMarker(event.latLng);
-        marker.setMap(this);
         $.post("/sites",{latitude:marker.getPosition().lat(),longitude: marker.getPosition().lng(),tour_id: tour_id },function(){  })
-          //everytime you click to add a marker, that line is drawn and saved to the db
         if(markers.length > 1){
-          var line = drawLine(markers[markers.length-2].position, event.latLng,map);
-          var slat = line.getPath().getAt(0).lat();
-          var slng = line.getPath().getAt(0).lng();
-          var elat = line.getPath().getAt(1).lat();
-          var elng = line.getPath().getAt(1).lng();
+          var line = drawLine(markers[markers.length-2].position, event.latLng);
+          lines.push(line);
+          var slat = line.getPath().getAt(0).lat();var slng = line.getPath().getAt(0).lng();
+          var elat = line.getPath().getAt(1).lat();var elng = line.getPath().getAt(1).lng();
           $.post('/lines',{slat:slat,slng:slng,elat:elat,elng:elng,tour_id:tour_id},function(){})
         }
+          //everytime you click to add a marker, that line is drawn and saved to the db
     });
-  google.maps.event.addListener(map, 'mousemove', function(event) {
-    if(dragStart){
-      dragging = true;
-      var pointsone = [];
-      var pointone = lineone.getPath().getAt(0);
-       pointsone.push(pointone);
-       pointsone.push(event.latLng);
-      var pointstwo = [];
-      var pointtwo = linetwo.getPath().getAt(1);
-      pointstwo.push(event.latLng);
-      pointstwo.push(pointtwo);
-      lineone.setPath(pointsone);
-      linetwo.setPath(pointstwo);
+    for(var i = 0; i< msites.length; i++){
+        var pos = new google.maps.LatLng(msites[i]['latitude'],msites[i]['longitude']);
+        var m = createMarker(pos);   
     }
-  });
+  //load saved lines from the db
+    for(var i = 0; i<dblines.length; i++){
+        var start = new google.maps.LatLng(dblines[i]['slat'],dblines[i]['slng']);
+        var end = new google.maps.LatLng(dblines[i]['elat'],dblines[i]['elng']);
+        lines.push(drawLine(start,end));    
+    }
+     for(var i = 0; i<dbvertices.length; i++){
+        var pos = new google.maps.LatLng(dbvertices[i]['latitude'],dbvertices[i]['longitude']);
+        vertices.push(createVertex(pos));    
+    }
 }//end of initialize
  function createMarker(pos) {
         var marker = new google.maps.Marker({
+          map: map,
           position: pos,
           zIndex: 3,
           draggable: true
         });
         markers.push(marker);
-        var line_start;
         var leftline;
         var rightline;
         //set wheel position
         //display site sources on the editor
         google.maps.event.addListener(marker, 'click', function(event) {
-            drawn = true;
           wheel.setPosition(this.position);
           //clear the editor
           $("#sources").html("");
           $('#preview').html(" ");
           find_site(this);
-          site_lines = findMarkerLines(this);
           if(site_id != 0){
             display_site(site_id);
           }
@@ -201,47 +202,21 @@ function initialize() {
         //handle database changes in here too
         google.maps.event.addListener(marker, 'dragstart', function(event) {
           wheel.setPosition(null);
+          find_site(this);
           //redraw the line
-            drawn = true;
           for(var i = 0; i < lines.length; i++){
-            if(lines[i].getPath().getAt(0) == this.position){
+            if(lines[i].getPath().getAt(0).lat() == this.getPosition().lat()){
                rightline = lines[i];
              }
-             if(lines[i].getPath().getAt(1) == this.position){
+             if(lines[i].getPath().getAt(1).lat() == this.getPosition().lat()){
               leftline = lines[i];
             }
           }
          });
         google.maps.event.addListener(marker, 'drag', function(event) {
             //remove the already drawn line before redrawing
-        var marker_move = this.position;
-        
-          for(var i = 0; i< site_lines.length; i++){
-            var line = site_lines[i];
-            var id = line[1];
-            if(line[0]=="start"){
-                var elat = line[2].data('elat')
-                var elng = line[2].data('elng');
-                var p = new google.maps.LatLng(elat,elng);
-                if(drawn){
-                    drawn.setMap(null);
-                    drawn = drawLine(marker_move,p,map);
-                    }
-                else{drawn = drawLine(marker_move,p,map)}
-            }
-            if(line[0]=="end"){
-                var slat = line[2].data('slat');
-                var slng = line[2].data('slng');
-                var p = new google.maps.LatLng(slat,slng);
-                if(drawn){
-                    drawn.setMap(null);
-                    drawn = drawLine(p,marker_move,map);
-                }
-                else{drawn = drawLine(p,marker_move,map);}
-            }
-          }
            if(leftline){
-             var path = [];
+            var path = [];
             path.push(leftline.getPath().getAt(0));
             path.push(event.latLng);
             leftline.setPath(path);
@@ -258,19 +233,21 @@ function initialize() {
             var new_lng = this.getPosition().lng();
             //get marker's original position
             //find out whether the original position was the lines start or end
-            for(var i = 0; i< site_lines.length; i++){
-                var line = site_lines[i];
-                if(line[0]=="start"){
-                    updateLine(line[1],new_lat,new_lng,"start");
-                }
-                if(line[0]=="end"){
-                    updateLine(line[1],new_lat,new_lng,"end");
-                }
-            }
-            updateSite(site_id,new_lat,new_lng);//ajax EDIT to database
+            //ajax EDIT to database
            //redraw line here and save to db
-           
-           
+           if(leftline){
+            var edit_id = findLine(leftline);
+            var slat = leftline.getPath().getAt(0).lat();var slng = leftline.getPath().getAt(0).lng();
+            var elat = leftline.getPath().getAt(1).lat();var elng = leftline.getPath().getAt(1).lng();
+            $.get('/lines/'+edit_id+'/edit',{slat:slat,slng:slng,elat:elat,elng:elng,tour_id:tour_id},function(){})
+           }
+           if(rightline){
+            var edit_id = findLine(rightline);
+            var slat = rightline.getPath().getAt(0).lat();var slng = rightline.getPath().getAt(0).lng();
+            var elat = rightline.getPath().getAt(1).lat();var elng = rightline.getPath().getAt(1).lng();
+            $.get('/lines/'+edit_id+'/edit',{slat:slat,slng:slng,elat:elat,elng:elng,tour_id:tour_id},function(){})
+           }
+           updateSite(site_id,new_lat,new_lng);
         });
         google.maps.event.addListener(marker, 'rightclick', function(event) {
          // $.post('/sites/'+site_id,{tour_id:tour_id},function(){});
@@ -286,34 +263,53 @@ function updateSite(site,lat,lng){
     $.get('/sites/'+site+'/edit',{latitude:lat,longitude:lng,tour_id:tour_id},function(){});
     //this ajax call will also change the contents of the #sites div 
 }
-//returns the google line
-function updateLine(line,lat,lng,startend){
-    //for(var i = 0; i<lines.length;i++){
-    //    var tmp = lines[i];
-    //    var slat = tmp.getPath().getAt(0).lat();
-    //    var slng = tmp.getPath().getAt(0).lng();
-    //    var elat = tmp.getPath().getAt(1).lat();
-    //    var elng = tmp.getPath().getAt(1).lng();
-    //    if()
-    //}
-    
-    if(startend=="start"){
-    $.get('/lines/'+line+'/edit/',{slat:lat,slng:lng,tour_id:tour_id},function(){});
-    }
-    if(startend=="end"){
-    $.get('/lines/'+line+'/edit/',{elat:lat,elng:lng,tour_id:tour_id},function(){});
-    }
-}
 
 function deleteMarker(m){
-
+    var remove_id = find_site(m);
+    $.post('/sites/'+remove_id,{_method:'delete'},function(){});
   for(var i =0; i < markers.length; i++){
-    if(markers[i].position.lat() == m.position.lat() && markers[i].position.lng() == m.position.lng() ){
+    if(markers[i]==m){
+      var pos = m.getPosition();
       m.setMap(null);
       markers.splice(i,1);
+      var vertex = createVertex(pos);
+      $.post("/vertices",{latitude:pos.lat(),longitude:pos.lng(),tour_id: tour_id },function(){  })
+      vertices.push(vertex);
       break;
     }
   }
+}
+
+function deleteVertex(v){
+  var ind = -1;
+ for(var i = 0; i < lines.length; i++){
+   if(lines[i].getPath().getAt(1).lat() == v.position.lat() &&
+      lines[i].getPath().getAt(1).lng() == v.position.lng()){
+     ind = i;
+     break;
+   }
+ }
+ var newline = drawLine(lines[ind].getPath().getAt(0),lines[ind+1].getPath().getAt(1));
+ var remove_id1 = findLine(lines[ind]);
+ $.post('/lines/'+remove_id1,{_method:'delete'},function(){}); //remove that line in db
+ var remove_id2 = findLine(lines[ind+1]);
+ $.post('/lines/'+remove_id2,{_method:'delete'},function(){}); //remove that line in db
+ lines[ind].setMap(null);
+ lines[ind+1].setMap(null);
+ lines.splice(ind,2,newline);
+ var slat = newLine.getPath().getAt(0).lat();var slng = newLine.getPath().getAt(0).lng();
+ var elat = newLine.getPath().getAt(1).lat();var elng = newLine.getPath().getAt(1).lng();
+ $.post('/lines',{slat:slat,slng:slng,elat:elat,elng:elng,tour_id:tour_id},function(){})
+
+ for(var i = 0; i < vertexes.length; i++){
+   if(vertexes[i] == v){
+    var remove_id = findVertex(v);
+    $.post('/vertices/'+remove_id,{_method:'delete'},function(){}); //remove that line in db
+    v.setMap(null); 
+    vertexes.splice(i,1);
+    break;
+   }
+ }
 }
 
 /*
@@ -321,7 +317,7 @@ Draw a polyline between two given points
 start - the start point of the polyline created
 end - the end point of the polyline created
 */
-function drawLine(start, end,map ) {
+function drawLine(start, end) {
     points = []
     points.push(start);
     points.push(end);
@@ -332,6 +328,7 @@ function drawLine(start, end,map ) {
       offset: '0',
       repeat: '4px'
     }],
+    strokeColor: "#000000",
     strokeOpacity: 0.0,
     strokeWeight: 50,
     editable: false,
@@ -339,47 +336,61 @@ function drawLine(start, end,map ) {
   });
     line.setPath(points);
   google.maps.event.addListener(line, 'mousemove', function(event) {
-    circle.setPosition(event.latLng);
-    var projection = overlay.getProjection();
-    var pixel = projection.fromLatLngToContainerPixel(event.latLng);
-    $("#tooltip").css("display","block");
-    $("#tooltip").css("left",pixel.x+15+"px").css("top",pixel.y+125+"px");
-    hoverLine = line;
+     if(dragStart){
+            dragging = true;
+            var pointsone = [];
+            var pointone = lineone.getPath().getAt(0);
+             pointsone.push(pointone);
+             pointsone.push(event.latLng);
+            var pointstwo = [];
+            var pointtwo = linetwo.getPath().getAt(1);
+            pointstwo.push(event.latLng);
+            pointstwo.push(pointtwo);
+            lineone.setPath(pointsone);
+            linetwo.setPath(pointstwo);
+          }
+          else{
+            circle.setPosition(event.latLng);
+            hoverLine = line;
+          }
   });
   
   google.maps.event.addListener(line, 'mouseout', function(event) {
     circle.setPosition(null);
-    $("#tooltip").css("display","none");
   });
   google.maps.event.addListener(line, 'mouseup', function(event) {
-    circle.setMap(map);
-    dragStart = false;
     if(dragging){
-      dragging = false;
-      for(var i = 0; i < lines.length; i++){
-        if(lines[i] == hovertemp){
-          lines.splice(i,1);
-          hovertemp.setMap(null);
-          break;
-        }
-      }
-      lines.push(lineone);
-      lines.push(linetwo);
-      var pointcompare = linetwo.getPath().getAt(1);
-      for(var i = 0; i < points.length; i++){
-        if(points[i] == pointcompare){
-          points.splice(i,0,event.latLng);
-          break;
-        }
-      }
-      createVertex(event.latLng);
+        var remove_id = findLine(lines[hoverPos]);
+        dragging = false;
+        var linecopy1 = drawLine(lineone.getPath().getAt(0), lineone.getPath().getAt(1));
+        var linecopy2 = drawLine(linetwo.getPath().getAt(0), linetwo.getPath().getAt(1));
+    
+        lineone.setMap(null);
+        linetwo.setMap(null);
+        lines[hoverPos].setMap(null);
+        lines.splice(hoverPos,1,linecopy1,linecopy2);
+        var slat1 = linecopy1.getPath().getAt(0).lat();var slng1 = linecopy1.getPath().getAt(0).lng();
+        var elat1 = linecopy1.getPath().getAt(1).lat();var elng1 = linecopy1.getPath().getAt(1).lng();
+        $.post('/lines',{slat:slat1,slng:slng1,elat:elat1,elng:elng1,tour_id:tour_id},function(){})
+        
+        //add linetwo to db
+        var slat2 = linecopy2.getPath().getAt(0).lat();var slng2 = linecopy2.getPath().getAt(0).lng();
+        var elat2 = linecopy2.getPath().getAt(1).lat();var elng2 = linecopy2.getPath().getAt(1).lng();
+        $.post('/lines',{slat:slat2,slng:slng2,elat:elat2,elng:elng2,tour_id:tour_id},function(){})
+        $.post('/lines/'+remove_id,{_method:'delete'},function(){});
+        var vertex = createVertex(linecopy1.getPath().getAt(1));
+        vertices.push(vertex);
+        $.post('/vertices',{latitude:event.latLng.lat(),longitude:event.latLng.lng(),tour_id:tour_id},function(){})
     }
     else{
-      lineone.setMap(null);
-      linetwo.setMap(null);
+        lineone.setMap(null);
+        linetwo.setMap(null);
     }
-  });
-  return line;
+        circle.setMap(map);
+        dragStart = false;
+        map.setOptions({draggable: true})
+    });
+   return line;
 }
 
 /*
@@ -413,14 +424,14 @@ function createVertex(pos){
     circle.setVisible(true);
   });
   google.maps.event.addListener(vertex, 'dragstart', function(event) {
-    point = vertex.position;
+    point = this.getPosition();
     for(var i = 0; i < lines.length; i++){
-      if(lines[i].getPath().getAt(0).lat() == vertex.position.lat() &&
-          lines[i].getPath().getAt(0).lng() == vertex.position.lng()){
+      if(lines[i].getPath().getAt(0).lat() == point.lat() &&
+          lines[i].getPath().getAt(0).lng() == point.lng()){
         rightline = lines[i];
       }
-      if(lines[i].getPath().getAt(1).lat() == vertex.position.lat() &&
-          lines[i].getPath().getAt(1).lng() == vertex.position.lng()){
+      if(lines[i].getPath().getAt(1).lat() == point.lat() &&
+          lines[i].getPath().getAt(1).lng() == point.lng()){
         leftline = lines[i];
       }
     }
@@ -440,23 +451,29 @@ function createVertex(pos){
     }
   });
   google.maps.event.addListener(vertex, 'dragend', function(event) {
-    for(var i = 0; i < points.length; i++){
-      if(points[i] == point){
-        points[i] = event.latLng;
-        break;
-      }
+    //var vertex_edit_id = findVertex(this);
+    if(leftline){
+    var edit_id = findLine(leftline);
+    var slat = leftline.getPath().getAt(0).lat();var slng = leftline.getPath().getAt(0).lng();
+    var elat = leftline.getPath().getAt(1).lat();var elng = leftline.getPath().getAt(1).lng();
+    $.get('/lines/'+edit_id+'/edit',{slat:slat,slng:slng,elat:elat,elng:elng,tour_id:tour_id},function(){})
     }
+    if(rightline){
+     var edit_id = findLine(rightline);
+     var slat = rightline.getPath().getAt(0).lat();var slng = rightline.getPath().getAt(0).lng();
+     var elat = rightline.getPath().getAt(1).lat();var elng = rightline.getPath().getAt(1).lng();
+     $.get('/lines/'+edit_id+'/edit',{slat:slat,slng:slng,elat:elat,elng:elng,tour_id:tour_id},function(){})
+    }
+    //$.get('/vertices/'+vertex_edit_id+'/edit',{latitude:this.getPosition().lat(),longitude:this.getPosition().lng(),tour_id:tour_id},function(){})
   });
   google.maps.event.addListener(vertex, 'rightclick', function(event) {
     if(confirm('Delete this site?')){
       //delete vertex
     }
   });
+  return vertex;
 }
 
-$("#save_tour").click(function(){
-    alert("Tour was saved!");
-});
  //methods for editor drag and drop
  function add_photo_to_site(event, ui){
     var img = ui.draggable.find('img');
@@ -482,40 +499,22 @@ function display_source(id){
  * marker - the clicked marker
 */
 function find_site(marker){
+    var s_id = 0;
   sites.find('.mark').each(function(){
     if(($(this).data('lat')==marker.getPosition().lat())&&($(this).data('lng')==marker.getPosition().lng())){
       site_div = $(this);
       site_id = $(this).data('mid');
+      s_id = $(this).data('mid');
     }
   });
-}
-//Sets the selected line to be the line that has the same coords at the marker 
-function findMarkerLines(marker){
-    var lat = marker.getPosition().lat();
-    var lng = marker.getPosition().lng();
-    var marker_lines = []
-    lines2.find('.line').each(function(){
-        var line = [] 
-    if(($(this).data('slat')==lat)&&($(this).data('slng')==lng)){
-        line.push("start"); //the marker is a starting point for the line
-        line.push($(this).data('lid'));
-        line.push($(this));
-        marker_lines.push(line);
-    }
-    if(($(this).data('elat')==lat)&&($(this).data('elng')==lng)){
-        line.push("end"); //the marker is a starting point for the line
-        line.push($(this).data('lid'));
-        line.push($(this));
-        marker_lines.push(line);
-    }
-    });
-    return marker_lines;
+  return s_id;
 }
 /* Finds the given line's associate line from the db
  * lines- the database lines
  * line - the clicked line
 */
-function findByLine(line){
+function findLine(line){
+    var line_id = 0;
     var slat = line.getPath().getAt(0).lat();
     var slng = line.getPath().getAt(0).lng();
     var elat = line.getPath().getAt(1).lat();
@@ -523,11 +522,26 @@ function findByLine(line){
   lines2.find('.line').each(function(){
     if((($(this).data('slat')==slat)&&($(this).data('slng')==slng))||
        (($(this).data('elat')==elat)&&($(this).data('elng')==elng))){
-      line_div = $(this);
       line_id = $(this).data('lid');
     }
   });
+  return line_id;
 }
+//returns a vertex id from the database
+function findVertex(vertex){
+    var vertex_id = 0;
+    var lat = vertex.getPosition().lat();
+    var lng = vertex.getPosition().lng();
+  vertices_div.find('.vertex').each(function(){
+    if(($(this).data('latitude')==lat)&&($(this).data('longitude')==lng)){
+      vertex_id = $(this).data('vid');
+    }
+  });
+  return vertex_id;
+}
+//Sets the selected line to be the line that has the same coords at the marker 
+
+
 /* Will post the text editor's contents to the site's db
  *
 */
@@ -535,9 +549,13 @@ function save_description(){
     
 }
 $(document).ready(function(){
+    tour_editor = true;
     sites = $("#sites");
     lines2 = $("#lines");
+    vertices_div = $('#vertices');
+    
     initialize();
+   
     $("#content_display").delegate('.photo','drag',function(e){
         $(this).draggable({
          helper: 'clone',
@@ -569,10 +587,21 @@ $(document).ready(function(){
         if(site_editor){
             $.post('/descriptions',{site_id: site_id, text: contents},function(){});
         }
-        //is this for a site, source, or tour?
-        //if(selected_source != '0'){
-        //    $.post('/descriptions',{source_id: selected_source, text: contents},function(){});
-        //}
+        //if the description is being updated and not initialized 
+        if($('#editor').data('did')!=null){
+            var did = $('#editor').data('did');
+            alert(did);
+            alert(contents);
+            if(source_editor && (selected_source != '0')){
+            $.get('/descriptions/'+did+'/edit',{source_id: selected_source, text: contents},function(){});
+            }
+            if(tour_editor){
+                $.get('/descriptions/'+did+'/edit',{tour_id: tour_id, text: contents},function(){});
+            }
+            if(site_editor){
+                $.get('/descriptions/'+did+'/edit',{site_id: site_id, text: contents},function(){});
+            }
+        }
      });
      $('#editPane').delegate('.site_description','click',function(){
         site_editor = true;
@@ -591,22 +620,31 @@ $(document).ready(function(){
         site_editor = false;
         //set the selected source
      })
-     $(document).delegate(tinymce.get('editor'),'blur',function(){
-        var contents = tinymce.get('editor').getContent();
-        //check to see that the editor has content
-        //if(contents != ""){
-        //    //save to database
-        //    if(source_editor && (selected_source != '0')){
-        //    $.post('/descriptions',{source_id: selected_source, text: contents},function(){});
-        //    }
-        //    if(tour_editor){
-        //        $.post('/descriptions',{tour_id: tour_id, text: contents},function(){});
-        //    }
-        //    if(site_editor){
-        //        $.post('/descriptions',{site_id: site_id, text: contents},function(){});
-        //    }
-        //}
-     });
+    //$(document).delegate(tinymce.get('editor'),'blur',function(){
+    //    var contents = tinymce.get('editor').getContent();
+    //    if(source_editor && (selected_source != '0')){
+    //    $.post('/descriptions',{source_id: selected_source, text: contents},function(){});
+    //    }
+    //    if(tour_editor){
+    //        $.post('/descriptions',{tour_id: tour_id, text: contents},function(){});
+    //    }
+    //    if(site_editor){
+    //        $.post('/descriptions',{site_id: site_id, text: contents},function(){});
+    //    }
+    //    //if the description is being updated and not initialized 
+    //    if($('#editor').data('did')!=null){
+    //        var did = $('#editor').data('did');
+    //        if(source_editor && (selected_source != '0')){
+    //        $.get('/descriptions/'+did+'/edit',{source_id: selected_source, text: tinymce.get('editor').getContent()},function(){});
+    //        }
+    //        if(tour_editor){
+    //            $.get('/descriptions/'+did+'/edit',{tour_id: tour_id, text: tinymce.get('editor').getContent()},function(){});
+    //        }
+    //        if(site_editor){
+    //            $.get('/descriptions/'+did+'/edit',{site_id: site_id, text: tinymce.get('editor').getContent()},function(){});
+    //        }
+    //    }
+    // });
     
 });
 });

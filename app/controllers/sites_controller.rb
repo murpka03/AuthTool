@@ -60,6 +60,10 @@ class SitesController < ApplicationController
   # PUT /characters/1.json
   def update
     @site = Site.find(params[:id])
+    @site.latitude = params[:latitude]
+    @site.longitude = params[:longitude]
+    @site.tour_id = params[:tour_id]
+    @site.save!
     respond_to do |format|
       format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@site.tour_id}
     end
@@ -75,10 +79,9 @@ class SitesController < ApplicationController
   def destroy
     @site = Site.find(params[:id])
     @site.destroy
-
     respond_to do |format|
-      format.html { redirect_to 'sessions/profile'  }
-      
+      format.js
+      format.html{redirect_to :controller=>:tours,:action=>:show,:tour_id=>@site.tour_id}
     end
   end
 end
