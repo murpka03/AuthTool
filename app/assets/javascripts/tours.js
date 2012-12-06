@@ -16,6 +16,7 @@ var hovertemp;
 var infoWindow;
 var sitLat;
 var sitLng;
+var pois = [];
 var site_id;
 var site_div;
 var line_id;
@@ -29,6 +30,7 @@ var tour_editor;
 var source_editor;
 var site_editor;
 var vertices_div;
+var hotspots_div;
 
 function initialize() {
 
@@ -90,8 +92,8 @@ function initialize() {
         }
     }
     
-    lineone = drawLine(pointone, event.latLng,map);
-    linetwo = drawLine(event.latLng, pointtwo,map);
+    lineone = drawLine(pointone, event.latLng);
+    linetwo = drawLine(event.latLng, pointtwo);
   });
     google.maps.event.addListener(map, 'mousemove', function(event) {
           if(dragStart){
@@ -112,8 +114,8 @@ function initialize() {
         google.maps.event.addListener(map, 'mouseup', function(event) {
           if(dragging){
             dragging = false;
-            var linecopy1 = drawLine(lineone.getPath().getAt(0), lineone.getPath().getAt(1),map);
-            var linecopy2 = drawLine(linetwo.getPath().getAt(0), linetwo.getPath().getAt(1),map);
+            var linecopy1 = drawLine(lineone.getPath().getAt(0), lineone.getPath().getAt(1));
+            var linecopy2 = drawLine(linetwo.getPath().getAt(0), linetwo.getPath().getAt(1));
             lineone.setMap(null);
             linetwo.setMap(null);
             //get the current line  
@@ -131,7 +133,10 @@ function initialize() {
             $.post('/lines',{slat:slat2,slng:slng2,elat:elat2,elng:elng2,tour_id:tour_id},function(){})
             lines[hoverPos].setMap(null);
             lines.splice(hoverPos,1,linecopy1,linecopy2);
-            //createVertex(linecopy1.getPath().getAt(1));
+            vertices.push(createVertex(linecopy1.getPath().getAt(1)));
+            $.post('/vertices',{latitude:linecopy1.getPath().getAt(1).lat(),longitude:linecopy1.getPath().getAt(1).lng(),tour_id:tour_id},function(){})
+            
+            
           }
           circle.setMap(map);
           dragStart = false;
@@ -164,6 +169,10 @@ function initialize() {
      for(var i = 0; i<dbvertices.length; i++){
         var pos = new google.maps.LatLng(dbvertices[i]['latitude'],dbvertices[i]['longitude']);
         vertices.push(createVertex(pos));    
+    }
+     for(var i = 0; i<dbhotspots.length; i++){
+        var pos = new google.maps.LatLng(dbhotspots[i]['latitude'],dbhotspots[i]['longitude']);
+        createPOI(pos);   
     }
 }//end of initialize
  function createMarker(pos) {
@@ -378,9 +387,9 @@ function drawLine(start, end) {
         var elat2 = linecopy2.getPath().getAt(1).lat();var elng2 = linecopy2.getPath().getAt(1).lng();
         $.post('/lines',{slat:slat2,slng:slng2,elat:elat2,elng:elng2,tour_id:tour_id},function(){})
         $.post('/lines/'+remove_id,{_method:'delete'},function(){});
-        var vertex = createVertex(linecopy1.getPath().getAt(1));
-        vertices.push(vertex);
-        $.post('/vertices',{latitude:event.latLng.lat(),longitude:event.latLng.lng(),tour_id:tour_id},function(){})
+        vertices.push(createVertex(linecopy1.getPath().getAt(1)))
+        $.post('/vertices',{latitude:linecopy1.getPath().getAt(1).lat(),longitude:linecopy1.getPath().getAt(1).lng(),tour_id:tour_id},function(){})
+        
     }
     else{
         lineone.setMap(null);
@@ -416,7 +425,7 @@ function createVertex(pos){
   var leftline;
   var rightline;
   var point;
-
+  var vertex_edit_id;
   google.maps.event.addListener(vertex, 'mouseover', function(event) {
     circle.setVisible(false);
   });
@@ -425,6 +434,7 @@ function createVertex(pos){
   });
   google.maps.event.addListener(vertex, 'dragstart', function(event) {
     point = this.getPosition();
+    vertex_edit_id = findVertex(vertex);
     for(var i = 0; i < lines.length; i++){
       if(lines[i].getPath().getAt(0).lat() == point.lat() &&
           lines[i].getPath().getAt(0).lng() == point.lng()){
@@ -451,20 +461,25 @@ function createVertex(pos){
     }
   });
   google.maps.event.addListener(vertex, 'dragend', function(event) {
-    //var vertex_edit_id = findVertex(this);
+    //var vertex_edit_id = findVertex(vertex);
     if(leftline){
     var edit_id = findLine(leftline);
     var slat = leftline.getPath().getAt(0).lat();var slng = leftline.getPath().getAt(0).lng();
     var elat = leftline.getPath().getAt(1).lat();var elng = leftline.getPath().getAt(1).lng();
     $.get('/lines/'+edit_id+'/edit',{slat:slat,slng:slng,elat:elat,elng:elng,tour_id:tour_id},function(){})
+    $.get('/vertices/'+vertex_edit_id+'/edit',{latitude:leftline.getPath().getAt(0).lat(),longitude:leftline.getPath().getAt(0).lng(),tour_id:tour_id},function(){})
     }
     if(rightline){
      var edit_id = findLine(rightline);
      var slat = rightline.getPath().getAt(0).lat();var slng = rightline.getPath().getAt(0).lng();
      var elat = rightline.getPath().getAt(1).lat();var elng = rightline.getPath().getAt(1).lng();
      $.get('/lines/'+edit_id+'/edit',{slat:slat,slng:slng,elat:elat,elng:elng,tour_id:tour_id},function(){})
+     $.get('/vertices/'+vertex_edit_id+'/edit',{latitude:leftline.getPath().getAt(1).lat(),longitude:leftline.getPath().getAt(1).lng(),tour_id:tour_id},function(){})
     }
-    //$.get('/vertices/'+vertex_edit_id+'/edit',{latitude:this.getPosition().lat(),longitude:this.getPosition().lng(),tour_id:tour_id},function(){})
+    
+  });
+  google.maps.event.addListener(vertex, 'dblclick', function(event) {
+    convertToPOI(vertex);
   });
   google.maps.event.addListener(vertex, 'rightclick', function(event) {
     if(confirm('Delete this site?')){
@@ -530,14 +545,126 @@ function findLine(line){
 //returns a vertex id from the database
 function findVertex(vertex){
     var vertex_id = 0;
-    var lat = vertex.getPosition().lat();
-    var lng = vertex.getPosition().lng();
+    var lat = vertex.position.lat();
+    var lng = vertex.position.lng();
   vertices_div.find('.vertex').each(function(){
     if(($(this).data('latitude')==lat)&&($(this).data('longitude')==lng)){
       vertex_id = $(this).data('vid');
     }
   });
   return vertex_id;
+}
+//returns a vertex id from the database
+function findHotspot(hotspot){
+    var hotspot_id = 0;
+    var lat = hotspot.position.lat();
+    var lng = hotspot.position.lng();
+  hotspots_div.find('.hotspot').each(function(){
+    if(($(this).data('latitude')==lat)&&($(this).data('longitude')==lng)){
+      hotspot_id = $(this).data('hid');
+    }
+  });
+  return hotspot_id;
+}
+function convertToPOI(v){
+
+  var pos = v.position;
+  for(var i = 0; i < vertices.length; i++){
+    if(vertices[i] == v){
+      v.setMap(null);
+      vertices.splice(i,1);
+      break;
+    }
+  }
+  //add poi to db
+  $.post('/hotspots',{latitude:pos.lat(),longitude:pos.lng(),tour_id:tour_id},function(){})
+  createPOI(pos);
+}
+
+/*
+Create a point of interest at a given position
+pos- the position of the point of interest
+*/
+function createPOI(pos){
+  var poi = new google.maps.Marker({
+    position: pos,
+    map: map,
+    icon: '/assets/binoculars.png',
+    draggable: true
+  });
+
+  pois.push(poi);
+
+  var rightline;
+  var leftline;
+  var hotspot_edit_id;
+  //listeners
+  google.maps.event.addListener(poi, 'mouseover', function(event) {
+    circle.setVisible(false);
+  });
+  google.maps.event.addListener(poi, 'mouseout', function(event) {
+    circle.setVisible(true);
+  });
+  google.maps.event.addListener(poi, 'dragstart', function(event) {
+    hotspot_edit_id = findHotspot(poi);
+    for(var i = 0; i < lines.length; i++){
+      if(lines[i].getPath().getAt(0) == poi.position){
+        rightline = lines[i];
+      }
+      if(lines[i].getPath().getAt(1) == poi.position){
+        leftline = lines[i];
+      }
+    }
+  });
+  google.maps.event.addListener(poi, 'drag', function(event) {
+    if(leftline){
+      var path = [];
+      path.push(leftline.getPath().getAt(0));
+      path.push(event.latLng);
+      leftline.setPath(path);
+    }
+    if(rightline){
+      var path = [];
+      path.push(event.latLng);
+      path.push(rightline.getPath().getAt(1));
+      rightline.setPath(path);
+    }
+  });
+  google.maps.event.addListener(poi, 'dragend', function(event) {
+    //var vertex_edit_id = findVertex(vertex);
+    if(leftline){
+    var edit_id = findLine(leftline);
+    var slat = leftline.getPath().getAt(0).lat();var slng = leftline.getPath().getAt(0).lng();
+    var elat = leftline.getPath().getAt(1).lat();var elng = leftline.getPath().getAt(1).lng();
+    $.get('/lines/'+edit_id+'/edit',{slat:slat,slng:slng,elat:elat,elng:elng,tour_id:tour_id},function(){})
+    $.get('/hotspots/'+hotspot_edit_id+'/edit',{latitude:leftline.getPath().getAt(0).lat(),longitude:leftline.getPath().getAt(0).lng(),tour_id:tour_id},function(){})
+    }
+    if(rightline){
+     var edit_id = findLine(rightline);
+     var slat = rightline.getPath().getAt(0).lat();var slng = rightline.getPath().getAt(0).lng();
+     var elat = rightline.getPath().getAt(1).lat();var elng = rightline.getPath().getAt(1).lng();
+     $.get('/lines/'+edit_id+'/edit',{slat:slat,slng:slng,elat:elat,elng:elng,tour_id:tour_id},function(){})
+     $.get('/hotspots/'+hotspot_edit_id+'/edit',{latitude:leftline.getPath().getAt(1).lat(),longitude:leftline.getPath().getAt(1).lng(),tour_id:tour_id},function(){})
+    }
+    
+  });
+  google.maps.event.addListener(poi, 'rightclick', function(event) {
+    if(confirm('Delete this point of interest?')){
+      var pos = poi.position;
+      
+      for(var i = 0; i < pois.length; i++){
+        if(pois[i] == poi){
+            var remove_id = findHotspot(pois[i])
+            $.post('/hotspots/'+remove_id,{_method:'delete'},function(){});
+          poi.setMap(null);
+          pois.splice(i,1);
+          break;
+        }
+      }
+      vertices.push(createVertex(pos));
+      //add vertex to db
+    }
+  });
 }
 //Sets the selected line to be the line that has the same coords at the marker 
 
@@ -552,10 +679,11 @@ $(document).ready(function(){
     tour_editor = true;
     sites = $("#sites");
     lines2 = $("#lines");
-    vertices_div = $('#vertices');
+    
     
     initialize();
-   
+    hotspots_div = $('#hotspots');
+    vertices_div = $('#vertices');
     $("#content_display").delegate('.photo','drag',function(e){
         $(this).draggable({
          helper: 'clone',

@@ -6,6 +6,7 @@
   var dbvertices = #{@vertices}
   var tour_id = #{tour.id}
   var dblines = #{@lines}
+  var dbhotspots = #{@hotspots}
 %html
   %head
     %meta{:content => "initial-scale=1.0, user-scalable=no", :name => "viewport"}/
@@ -13,8 +14,8 @@
     = tinymce_assets
   %body
     %h1
-      =tour.name
-    = link_to image_tag('order.png'),{:controller=>:descriptions,:action=>:show,:tour_id=>tour.id},{:id=>'tour_description',:remote=>true} 
+      =@tour.name
+    = link_to image_tag('order.png'),{:controller=>:descriptions,:action=>:show,:tour_id=>@tour.id},{:id=>'tour_description',:remote=>true} 
     %input#searchTextField{:type => "text",:placeholder=>'find location'}
     #content
       #map_canvas
@@ -26,7 +27,10 @@
           = render line
       #vertices
         -@tour.vertices.each do |vertex|
-          = render vertex
+          .vertex{:data=>{:latitude=>vertex.latitude,:longitude=>vertex.longitude,:vid=> vertex.id}}
+      #hotspots
+        -@tour.hotspots.each do |hotspot|
+          .hotspot{:data=>{:latitude=>hotspot.latitude,:longitude=>hotspot.longitude,:hid=>hotspot.id}}
       #library
         =render :template=>'library/show'
       #editPane
@@ -37,9 +41,3 @@
         #preview
         #sources
           %h4 Sources:
-    #buttons
-      #profile_button
-        =button_to 'Back to Profile',{:controller=>'sessions',:action=>'profile',:user_id=> current_user.id},{:class => 'btn btn-large btn-primary'}
-      #save_tour
-        =button_tag "Save Sites", {:class => 'btn btn-large btn-primary'} 
-

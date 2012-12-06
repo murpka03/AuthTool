@@ -1,5 +1,5 @@
 -source_id = source.id
 .source{:data=> {:sid=> source_id}}
   =image_tag(source.image, :class=>'source_image')
-  =link_to image_tag('remove_icon.png'),{:controller=>:sources,:action=>:destroy,:source_id=>source.id},{:class=>'delete'}
+  =link_to image_tag('remove_icon.png'),source,:method=>:delete,:class=>'delete'
   =link_to image_tag('order.png'),{:controller=>:descriptions,:action=>:show,:source_id=>source.id},{:class=>'edit_icon',:remote=>true}

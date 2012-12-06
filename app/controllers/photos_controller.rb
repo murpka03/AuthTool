@@ -12,10 +12,10 @@ class PhotosController < ApplicationController
     respond_to do |format|
       format.js
       if @@profile
-        format.html {render 'sessions/profile'}
+        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>session[:user_id]}
       end
       if @@tour_bool
-        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour,:user_id=>session[:user_id]}
       end
     end
   end
@@ -26,10 +26,10 @@ class PhotosController < ApplicationController
      respond_to do |format|
       format.js
       if @@profile
-        format.html {render 'sessions/profile'}
+        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>session[:user_id]}
       end
       if @@tour_bool
-        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour,:user_id=>session[:user_id]}
       end
     end
   end
@@ -40,10 +40,10 @@ class PhotosController < ApplicationController
     respond_to do |format|
       format.js
       if @@profile
-        format.html {render 'sessions/profile'}
+        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>session[:user_id]}
       end
       if @@tour_bool
-        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour,:user_id=>session[:user_id]}
       end
     end
   end
@@ -56,10 +56,10 @@ class PhotosController < ApplicationController
     @photo = Photo.find(params[:id])
     respond_to do |format|
       if @@profile
-        format.html {render 'sessions/profile'}
+        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>session[:user_id]}
       end
       if @@tour_bool
-        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour, :user_id =>session[:user_id]}
       end
     end
   end
@@ -69,10 +69,10 @@ class PhotosController < ApplicationController
     @photo.destroy
     respond_to do |format|
       if @@profile
-        format.html {render 'sessions/profile'}
+        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>session[:user_id]}
       end
       if @@tour_bool
-        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour}
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour, :user_id =>session[:user_id]}
       end
     end
   end

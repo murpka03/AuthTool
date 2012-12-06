@@ -1,5 +1,5 @@
-var lat = <%= params[:latitude] %>
-var lng = <%= params[:longitude] %>
+var lat = <%= @vertex.latitude %>
+var lng = <%= @vertex.longitude %>
 var id = <%= @vertex.id %>
 $("#vertices").find('.vertex').each(function(){
   if($(this).data('vid') == id){

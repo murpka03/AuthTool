@@ -1,0 +1,5 @@
+<% if @hotspot.new_record? %>
+  alert("Failed to create site");
+<% else %>
+  $("#hotspots").append("<%= j render @hotspot %>");
+<% end %>

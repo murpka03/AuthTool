@@ -6,36 +6,37 @@ class HotspotsController < ApplicationController
   
   def show
     @hotspot = Hotspot.find(params[:id])
-    respond_to do |format|
-      format.js
-      format.html
-    end
-  
   end
 
   # GET /hotspots/new
   # GET /hotspots/new.json
   def new
-    @hotspot = Hotspot.new(:tour_id=>params[:tour_id])
-  #explicitly designate tourid in create
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json:@hotspot }
-    end
+   @hotspot = Hotspot.new(:tour_id=>params[:tour_id])
   end
 
   
   def edit
     @hotspot = Hotspot.find(params[:id])
+    @hotspot.latitude = params[:latitude]
+    @hotspot.longitude = params[:longitude]
+    @hotspot.save!
+    respond_to do |format|
+      format.js
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@hotspot.tour_id}
+    end
   end
 
   # POST /characters
   # POST /characters.json
   def create
-    @hotspot = Hotspot.create(:tour_id=>params[:tour_id])
+    @hotspot = Hotspot.new(:longitude=>params[:longitude],:latitude=>params[:latitude],:tour_id=>params[:tour_id])
     @hotspot.latitude = params[:latitude]
     @hotspot.longitude = params[:longitude]
     @hotspot.save!
+    respond_to do |format|
+      format.js
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@hotspot.tour_id}
+    end
   end
   
   #action to add source materials to a hotspot
@@ -43,7 +44,13 @@ class HotspotsController < ApplicationController
   # PUT /characters/1
   # PUT /characters/1.json
   def update
-  
+    @hotspot = Hotspot.find(params[:id])
+    @hotspot.latitude = params[:latitude]
+    @hotspot.longitude = params[:longitude]
+    @hotspot.save!
+     respond_to do |format|
+      format.html {redirect_to :controller=>:tours,:action=>:show,:tour_id=>@hotspot.tour_id}
+    end
   end
 
   # DELETE /characters/1
@@ -51,10 +58,9 @@ class HotspotsController < ApplicationController
   def destroy
     @hotspot = Hotspot.find(params[:id])
     @hotspot.destroy
-
     respond_to do |format|
-      format.html { redirect_to 'sessions/profile' }
-      format.json { head :no_content }
+      format.js
+      format.html{redirect_to :controller=>:tours,:action=>:show,:tour_id=>@hotspot.tour_id}
     end
   end
 

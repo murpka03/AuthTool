@@ -14,7 +14,7 @@ class SourcesController < ApplicationController
   
   
   def show
-    @source = Source.find(params[:id])
+    @source = Source.find(params[:source_id])
     if !params[:site_id].nil?
       @source.site_id = params[:site_id]
     end
@@ -51,11 +51,16 @@ class SourcesController < ApplicationController
   end
 
   def destroy
-    @source = Source.find(params[:source_id])
+    @source = Source.find(params[:id])
     @source.destroy
     respond_to do |format|
-      format.html { redirect_to 'sessions/profile' }
-      format.json { head :no_content }
+    format.js
+    if @@profile
+        format.html {redirect_to :controller=>:sessions,:action=>:profile,:user_id=>session[:user_id]}
+      end
+      if @@tour_bool
+        format.html {redirect_to :controller=>:tours, :action=>:show,:tour_id=>@@current_tour, :user_id =>session[:user_id]}
+      end
     end
   end
   

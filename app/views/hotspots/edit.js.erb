@@ -1,0 +1,10 @@
+var lat = <%= @hotspot.latitude %>
+var lng = <%= @hotspot.longitude %>
+var id = <%= @hotspot.id %>
+$("#hotspots").find('.hotspot').each(function(){
+  if($(this).data('hid') == id){
+    $(this).data('latitude',lat);
+    $(this).data('longitude',lng);
+  }
+});
+

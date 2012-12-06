@@ -1,0 +1,6 @@
+var id = <%= @source.id %>
+$("#sources").children('.source').each(function(){
+  if($(this).data('sid')==id){
+    $(this).remove();
+  }
+});

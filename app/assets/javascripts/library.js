@@ -58,8 +58,14 @@ $(document).ready(function(){
       $.facebox({image: url});
    });
    $('#folder_table').delegate('.label','dblclick',function(e){
-      selectedFolder = $(this).data('fid');
-      folderLabelClick($(this));
+      selectedFolder = $(this).text();
+      var found = false;
+      $('#directory_trail').find('.folder_trail').each(function(){
+          if(selectedFolder == $(this).text()){
+            found = true;
+          }
+      });
+      if (found==false){folderLabelClick($(this));}
       e.stopPropagation();
    });
    //handle directory_trail clicks

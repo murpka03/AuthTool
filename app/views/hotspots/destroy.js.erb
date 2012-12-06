@@ -1,0 +1,6 @@
+var id = <%= @hotspot.id %>
+$("#hotspots").children('.hotspot').each(function(){
+  if($(this).data('hid')==id){
+    $(this).remove();
+  }
+});
