@@ -142,6 +142,26 @@ function initialize() {
           dragStart = false;
           map.setOptions({draggable: true});
         });
+                //search text field
+        var input = document.getElementById('searchTextField');
+        var options = {
+          types: ['geocode']
+        };
+      
+        autocomplete = new google.maps.places.Autocomplete(input, options);
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+          var place = autocomplete.getPlace();
+          if (!place.geometry) {
+            // Inform the user that a place was not found and return.
+            return;
+          }
+          else {
+            // Otherwise use the location and set a chosen zoom level.
+            map.setCenter(place.geometry.location);
+            map.setZoom(18);
+          }
+        });
   //map listener to add marker
   //marker added to db here
    google.maps.event.addListener(map, 'click', function(event) {
@@ -310,15 +330,17 @@ function deleteVertex(v){
  var elat = newLine.getPath().getAt(1).lat();var elng = newLine.getPath().getAt(1).lng();
  $.post('/lines',{slat:slat,slng:slng,elat:elat,elng:elng,tour_id:tour_id},function(){})
 
- for(var i = 0; i < vertexes.length; i++){
-   if(vertexes[i] == v){
-    var remove_id = findVertex(v);
-    $.post('/vertices/'+remove_id,{_method:'delete'},function(){}); //remove that line in db
-    v.setMap(null); 
-    vertexes.splice(i,1);
-    break;
-   }
- }
+    for(var i = 0; i < vertices.length; i++){
+    if(vertices[i] == v){
+        var remove_id = findVertex(v);
+        $.post('/vertices/'+remove_id,{_method:'delete'},function(){}); //remove that line in db
+
+      v.setMap(null);
+      vertices.splice(i,1);
+      break;
+    }
+  }
+ 
 }
 
 /*
@@ -482,8 +504,8 @@ function createVertex(pos){
     convertToPOI(vertex);
   });
   google.maps.event.addListener(vertex, 'rightclick', function(event) {
-    if(confirm('Delete this site?')){
-      //delete vertex
+    if(confirm('Delete this vertex?')){
+      deleteVertex(vertex);
     }
   });
   return vertex;
@@ -571,6 +593,9 @@ function convertToPOI(v){
   var pos = v.position;
   for(var i = 0; i < vertices.length; i++){
     if(vertices[i] == v){
+        var remove_id = findVertex(v);
+        $.post('/vertices/'+remove_id,{_method:'delete'},function(){}); //remove that line in db
+
       v.setMap(null);
       vertices.splice(i,1);
       break;

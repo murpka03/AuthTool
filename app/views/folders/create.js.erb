@@ -1,5 +1,4 @@
 <% if @folder.parent_id != nil %>
-  alert('child');
 <% else %>
   $('#folder_table').append("<%= j render :partial=>'folders/label', :locals=>{:folder_id=>@folder.id} %>");
 <% end %>

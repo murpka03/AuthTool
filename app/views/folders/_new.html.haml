@@ -4,7 +4,7 @@
     = f.text_field :name,{:placeholder=>"enter folder name"}
     = f.hidden_field :user_id
     = f.hidden_field :parent_id
-    = f.submit "Create CHILD",{:class=>'btn btn-info'}
+    = f.submit "Create",{:class=>'btn btn-info'}
 -else
   = form_for Folder.new do |l| 
     = l.text_field :name,{:placeholder=>"enter folder name"}
